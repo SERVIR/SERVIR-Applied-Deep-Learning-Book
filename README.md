@@ -3,7 +3,7 @@
 <!-- #![](Images/Book_Cover.png) -->
 
 <p align="center">
-  <img width="600" height="1200" src="https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/blob/main/Images/Book_Cover.png">
+  <img width="400" height="800" src="https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/blob/main/Images/Book_Cover.png">
 </p>
 
 
