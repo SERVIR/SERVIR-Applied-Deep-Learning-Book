@@ -23,7 +23,8 @@ Each chapter contains both the theoretical background as well as a practical han
 
 * [Introduction](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/tree/main/01_Introduction)
 * [Data Preperation](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/tree/main/02_Data_Preperation)
-* [Semantic Segmentation](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/tree/main/03_Semantic_Segmentation) 
+* [Semantic Segmentation](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/tree/main/03_Semantic_Segmentation)
+  * [Crop Type Modeling](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/tree/main/03_Semantic_Segmentation/01__Crop_Mapping) 
 * [Object Detection](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/tree/main/04_Object_Detection)
 * [Time Series](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/tree/main/05_Time_Series)
 * [Ecological Processes Simulation](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/tree/main/06_Ecological_Processes_Simulation)
