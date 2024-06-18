@@ -4,8 +4,8 @@
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![image](https://img.shields.io/pypi/v/servir-aces.svg)](https://pypi.python.org/pypi/servir-aces)
 [![image](https://img.shields.io/conda/vn/conda-forge/servir-aces.svg)](https://anaconda.org/conda-forge/servir-aces)
-<!-- [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/servir-aces.svg)](https://anaconda.org/conda-forge/servir-aces) -->
 [![SERVIR: Global](https://img.shields.io/badge/SERVIR-Global-green)](https://servirglobal.net)
+<!-- [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/servir-aces.svg)](https://anaconda.org/conda-forge/servir-aces) -->
 
 <!-- #![](Images/Book_Cover.png) -->
 
