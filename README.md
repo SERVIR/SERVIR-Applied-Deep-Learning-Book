@@ -3,9 +3,8 @@
 [![Python: 3.x](https://img.shields.io/badge/python-3.x-blue.svg)](https://www.python.org/)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![image](https://img.shields.io/pypi/v/servir-aces.svg)](https://pypi.python.org/pypi/servir-aces)
-[![Conda Recipe](https://img.shields.io/badge/recipe-servir--aces-green.svg)](https://github.com/conda-forge/servir-aces-feedstock)
 [![image](https://img.shields.io/conda/vn/conda-forge/servir-aces.svg)](https://anaconda.org/conda-forge/servir-aces)
-[![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/servir-aces.svg)](https://anaconda.org/conda-forge/servir-aces)
+<!-- [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/servir-aces.svg)](https://anaconda.org/conda-forge/servir-aces) -->
 [![SERVIR: Global](https://img.shields.io/badge/SERVIR-Global-green)](https://servirglobal.net)
 
 <!-- #![](Images/Book_Cover.png) -->
