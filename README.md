@@ -1,9 +1,8 @@
-# SERVIR-Applied-Deep-Learning-Book
+# SERVIR Applied Deep Learning Book
 
 [![Python: 3.x](https://img.shields.io/badge/python-3.x-blue.svg)](https://www.python.org/)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![SERVIR: Global](https://img.shields.io/badge/SERVIR-Global-green)](https://servirglobal.net)
-
 
 <!-- #![](Images/Book_Cover.png) -->
 
@@ -20,6 +19,7 @@ We suspect readers are coming to this virtual book with preexisting geospatial e
 
 Each chapter contains both the theoretical background as well as a practical hand-on section facilitated through virtual notebooks. Finally, this book spans a variety of platforms such as TensorFlow and PyTorch to provide readers with a wide set of examples.
 
+## Applied Deep Learning Book Outline
 
 * [Introduction](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/tree/main/01_Introduction)
 * [Data Preperation](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/tree/main/02_Data_Preperation)
@@ -33,3 +33,17 @@ Each chapter contains both the theoretical background as well as a practical han
 * [Future of Deep Learning and Foundational Models](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/tree/main/10_Future_of_Deep_Learning_and_Foundational_Models) 
 * [Ethics of Artificial Intelligence](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/tree/main/11_Ethics_and_Artificial_Intelligence)
 * [Conclusions](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/tree/main/12_Conclusions)
+
+
+	
+
+
+## License and Distribution
+
+SERVIR-Applied-Deep-Learning-Book is distributed by SERVIR under the terms of the MIT License. See
+[LICENSE](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/blob/main/LICENSE) in this directory for more information.
+
+## Privacy & Terms of Use
+
+SERVIR-Applied-Deep-Learning-Book abides to all of SERVIR's privacy and terms of use as described
+at [https://servirglobal.net/Privacy-Terms-of-Use](https://servirglobal.net/Privacy-Terms-of-Use).
