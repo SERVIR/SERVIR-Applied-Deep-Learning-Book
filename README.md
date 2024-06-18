@@ -1,5 +1,10 @@
 # SERVIR-Applied-Deep-Learning-Book
 
+[![Python: 3.x](https://img.shields.io/badge/python-3.x-blue.svg)](https://www.python.org/)
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+[![SERVIR: Global](https://img.shields.io/badge/SERVIR-Global-green)](https://servirglobal.net)
+
+
 <!-- #![](Images/Book_Cover.png) -->
 
 <p align="center">
