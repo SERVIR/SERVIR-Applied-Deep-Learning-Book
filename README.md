@@ -8,7 +8,7 @@
 <!-- #![](Images/Book_Cover.png) -->
 
 <p align="center">
-  <img width="400" height="400" src="https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/blob/main/Images/Book_Cover.png">
+  <img width="400" height="500" src="https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/blob/main/Images/Book_Cover.png">
 </p>
 
 
