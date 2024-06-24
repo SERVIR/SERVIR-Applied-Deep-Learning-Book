@@ -25,7 +25,7 @@ Each chapter contains both the theoretical background as well as a practical han
 ## Applied Deep Learning Book Outline
 
 * [Introduction](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/tree/main/01_Introduction)
-* [Data Preperation](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/tree/main/02_Data_Preperation)
+* [Data Preparation](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/tree/main/02_Data_Preperation)
 * [Semantic Segmentation](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/tree/main/03_Semantic_Segmentation)
   * [Crop Type Modeling](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/tree/main/03_Semantic_Segmentation/01__Crop_Mapping) 
 * [Object Detection](https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book/tree/main/04_Object_Detection)
