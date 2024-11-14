@@ -46,17 +46,17 @@ book:
     - index.qmd
     - part: "Curriculum"
       chapters: 
-        - 02_Data_Preparation/index.ipynb
+        - 02_Data_Preparation
         - 03_Semantic_Segmentation/01__Crop_Mapping/notebooks/Rice_Mapping_Bhutan_2021.ipynb
-        - 04_Object_Detection/index.ipynb
-        - 05_Time_Series/index.ipynb
-        - 06_Eco_Process_Sim/index.ipynb
-        - 07_Transfer_Learning/index.ipynb
-        - 08_Fusion/index.ipynb
-        - 09_Downscaling/index.ipynb
-        - 10_Future/index.ipynb
-        - 11_Ethics/index.ipynb
-        - 12_Conclusions/index.ipynb
+        - 04_Object_Detection
+        - 05_Time_Series
+        - 06_Eco_Process_Sim
+        - 07_Transfer_Learning
+        - 08_Fusion
+        - 09_Downscaling
+        - 10_Future
+        - 11_Ethics
+        - 12_Conclusions
     - references.qmd
 bibliography: references.bib
 
