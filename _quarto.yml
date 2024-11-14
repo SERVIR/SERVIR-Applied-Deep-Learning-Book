@@ -50,7 +50,7 @@ book:
         - 03_Semantic_Segmentation/01__Crop_Mapping/notebooks/Rice_Mapping_Bhutan_2021.ipynb
         - 04_Object_Detection
         - 05_Time_Series
-        - 06_Eco_Process_Sim
+        - 06_Ecological_Processes_Simulation
         - 07_Transfer_Learning
         - 08_Fusion
         - 09_Downscaling
