@@ -1,70 +1,70 @@
-project:
-  type: website
-  output-dir: docs
-  # repo-url: https://servir.github.io/SERVIR-Applied-Deep-Learning-Book/
-
-website:
-  title: "ZZZZZZZZZ"
-  navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
-
-format:
-  html:
-    theme: cosmo
-    css: styles.css
-    toc: true
-
-
-
-
 # project:
-#   type: book
+#   type: website
+#   output-dir: docs
+#   repo-url: https://servir.github.io/SERVIR-Applied-Deep-Learning-Book/
 
-# book:
-#   title: "SERVIR's Applied Deep Learning Handbook"
-#   author:
-#     - name: Tim Mayer
-#       affiliations:
-#         - id: nasa-servir
-#           name: NASA - SERVIR
-#         - id: UofA-huntsville
-#           name: The University of Alabama in Huntsville
-#     - name: Biplov Bhandari
-#       affiliations:
-#         - id: woolpert
-#           name: Woolpert Digital Innovations
-
-#   date: "11/14/2024"
-#   cover-image: images/Book_Cover.png
-#   repo-url: https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book
-#   repo-actions: [source, edit, issue]
-#   downloads: [pdf]
-#   chapters:
-#     - index.qmd
-#     - part: "Curriculum"
-#       chapters: 
-#         - 02_Data_Preparation/index.ipynb
-#         - 03_Semantic_Segmentation/01__Crop_Mapping/notebooks/Rice_Mapping_Bhutan_2021.ipynb
-#         - 04_Object_Detection/index.ipynb
-#         - 05_Time_Series/index.ipynb
-#         - 06_Eco_Process_Sim/index.ipynb
-#         - 07_Transfer_Learning/index.ipynb
-#         - 08_Fusion/index.ipynb
-#         - 09_Downscaling/index.ipynb
-#         - 10_Future/index.ipynb
-#         - 11_Ethics/index.ipynb
-#         - 12_Conclusions/index.ipynb
-#     - references.qmd
-# bibliography: references.bib
+# website:
+#   title: "ZZZZZZZZZ"
+#   navbar:
+#     left:
+#       - href: index.qmd
+#         text: Home
+#       - about.qmd
 
 # format:
 #   html:
-#     theme:  # pandoc, default, flatly, darkly, sketchy, sandstone, cyborg, zephyr
-#       light: flatly
-#       dark: darkly
-#   pdf:
-#     documentclass: scrreprt  # book
+#     theme: cosmo
+#     css: styles.css
+#     toc: true
+
+
+
+
+project:
+  type: book
+
+book:
+  title: "SERVIR's Applied Deep Learning Handbook"
+  author:
+    - name: Tim Mayer
+      affiliations:
+        - id: nasa-servir
+          name: NASA - SERVIR
+        - id: UofA-huntsville
+          name: The University of Alabama in Huntsville
+    - name: Biplov Bhandari
+      affiliations:
+        - id: woolpert
+          name: Woolpert Digital Innovations
+
+  date: "11/14/2024"
+  cover-image: images/Book_Cover.png
+  repo-url: https://servir.github.io/SERVIR-Applied-Deep-Learning-Book/
+  repo-actions: [source, edit, issue]
+  downloads: [pdf]
+  chapters:
+    - index.qmd
+    - part: "Curriculum"
+      chapters: 
+        - 02_Data_Preparation/index.ipynb
+        - 03_Semantic_Segmentation/01__Crop_Mapping/notebooks/Rice_Mapping_Bhutan_2021.ipynb
+        - 04_Object_Detection/index.ipynb
+        - 05_Time_Series/index.ipynb
+        - 06_Eco_Process_Sim/index.ipynb
+        - 07_Transfer_Learning/index.ipynb
+        - 08_Fusion/index.ipynb
+        - 09_Downscaling/index.ipynb
+        - 10_Future/index.ipynb
+        - 11_Ethics/index.ipynb
+        - 12_Conclusions/index.ipynb
+    - references.qmd
+bibliography: references.bib
+
+format:
+  html:
+    theme:  # pandoc, default, flatly, darkly, sketchy, sandstone, cyborg, zephyr
+      light: flatly
+      dark: darkly
+  pdf:
+    documentclass: scrreprt  # book
     
