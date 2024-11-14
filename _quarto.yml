@@ -54,8 +54,8 @@ book:
         - 07_Transfer_Learning
         - 08_Fusion
         - 09_Downscaling
-        - 10_Future
-        - 11_Ethics
+        - 10_Future_of_Deep_Learning_and_Foundational_Models
+        - 11_Ethics_and_Artificial_Intelligence
         - 12_Conclusions
     - references.qmd
 bibliography: references.bib
