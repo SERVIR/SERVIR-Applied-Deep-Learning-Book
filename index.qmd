@@ -1,11 +1,7 @@
 ---
-author: "Norah Smith"
+title: "Quarto_Website"
 ---
 
-# Introduction {.unnumbered}
+This is a Quarto website.
 
-@knuth84 says some interesting stuff...
-
-Todo: Make some reference to @flores2019sar
-
-{{< lipsum >}}
+To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
