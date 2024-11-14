@@ -24,7 +24,7 @@ book:
     - index.md
     - part: "Curriculum"
       chapters: 
-        - 02-Data-Preparation/index.ipynb
+        - 02_Data_Preparation/index.ipynb
         - 03_Semantic_Segmentation/01__Crop_Mapping/notebooks/Rice_Mapping_Bhutan_2021.ipynb
         - 04_Object_Detection/index.ipynb
         - 05_Time_Series/index.ipynb
@@ -45,3 +45,4 @@ format:
       dark: darkly
   pdf:
     documentclass: scrreprt  # book
+    
