@@ -21,7 +21,7 @@ book:
   repo-actions: [source, edit, issue]
   downloads: [pdf]
   chapters:
-    - index.md
+    - index.qmd
     - part: "Curriculum"
       chapters: 
         - 02_Data_Preparation/index.ipynb
