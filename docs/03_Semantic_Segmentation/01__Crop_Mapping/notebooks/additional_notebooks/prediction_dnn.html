@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Rice mapping in Bhutan with U-Net using high resolution satellite imagery – Quarto_Website</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../../">
+<script src="../../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../../index.html">
+    <span class="navbar-title">Quarto_Website</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#this-notebook-shows-an-example-of-using-the-tfrecord-images-for-prediction-using-saved-dnn-model." id="toc-this-notebook-shows-an-example-of-using-the-tfrecord-images-for-prediction-using-saved-dnn-model." class="nav-link active" data-scroll-target="#this-notebook-shows-an-example-of-using-the-tfrecord-images-for-prediction-using-saved-dnn-model.">This notebook shows an example of using the TFRecord images for prediction using saved DNN Model.</a></li>
+  <li><a href="#setup-environment" id="toc-setup-environment" class="nav-link" data-scroll-target="#setup-environment">Setup environment</a></li>
+  <li><a href="#setup-config-file-variables" id="toc-setup-config-file-variables" class="nav-link" data-scroll-target="#setup-config-file-variables">Setup config file variables</a></li>
+  <li><a href="#update-the-config-file-programtically" id="toc-update-the-config-file-programtically" class="nav-link" data-scroll-target="#update-the-config-file-programtically">Update the config file programtically</a></li>
+  <li><a href="#load-config-file-variables" id="toc-load-config-file-variables" class="nav-link" data-scroll-target="#load-config-file-variables">Load config file variables</a></li>
+  <li><a href="#get-files-for-export" id="toc-get-files-for-export" class="nav-link" data-scroll-target="#get-files-for-export">Get files for export</a></li>
+  <li><a href="#get-the-list-of-image-files-and-the-json-mixer-file." id="toc-get-the-list-of-image-files-and-the-json-mixer-file." class="nav-link" data-scroll-target="#get-the-list-of-image-files-and-the-json-mixer-file.">Get the list of image files and the JSON mixer file.</a></li>
+  <li><a href="#get-relevant-info-from-the-json-mixer-file." id="toc-get-relevant-info-from-the-json-mixer-file." class="nav-link" data-scroll-target="#get-relevant-info-from-the-json-mixer-file.">Get relevant info from the JSON mixer file.</a></li>
+  <li><a href="#load-the-buffer-size-for-prediction" id="toc-load-the-buffer-size-for-prediction" class="nav-link" data-scroll-target="#load-the-buffer-size-for-prediction">Load the buffer size for prediction</a></li>
+  <li><a href="#setup-features" id="toc-setup-features" class="nav-link" data-scroll-target="#setup-features">Setup features</a>
+  <ul class="collapse">
+  <li><a href="#some-useful-functions" id="toc-some-useful-functions" class="nav-link" data-scroll-target="#some-useful-functions">Some useful functions</a></li>
+  </ul></li>
+  <li><a href="#create-a-dataset" id="toc-create-a-dataset" class="nav-link" data-scroll-target="#create-a-dataset">Create a dataset</a></li>
+  <li><a href="#perform-inference" id="toc-perform-inference" class="nav-link" data-scroll-target="#perform-inference">Perform Inference</a></li>
+  <li><a href="#write-predictions" id="toc-write-predictions" class="nav-link" data-scroll-target="#write-predictions">Write Predictions</a></li>
+  <li><a href="#upload-to-google-earth-engine-gee" id="toc-upload-to-google-earth-engine-gee" class="nav-link" data-scroll-target="#upload-to-google-earth-engine-gee">Upload to Google Earth Engine (GEE)</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Rice mapping in Bhutan with U-Net using high resolution satellite imagery</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="cell-1" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Copyright 2024 NASA</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Licensed under the Apache License, Version 2.0 (the "License");</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># you may not use this file except in compliance with the License.</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># You may obtain a copy of the License at</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#     https://www.apache.org/licenses/LICENSE-2.0</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Unless required by applicable law or agreed to in writing, software</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># distributed under the License is distributed on an "AS IS" BASIS,</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># See the License for the specific language governing permissions and</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># limitations under the License.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="this-notebook-shows-an-example-of-using-the-tfrecord-images-for-prediction-using-saved-dnn-model." class="level3">
+<h3 class="anchored" data-anchor-id="this-notebook-shows-an-example-of-using-the-tfrecord-images-for-prediction-using-saved-dnn-model.">This notebook shows an example of using the TFRecord images for prediction using saved DNN Model.</h3>
+<table align="left">
+<tbody><tr><td>
+<a href="https://colab.research.google.com/github/SERVIR/servir-aces/blob/main/notebooks/prediction_dnn.ipynb"> <img src="https://cloud.google.com/ml-engine/images/colab-logo-32px.png" alt="Colab logo"> Run in Colab </a>
+</td>
+<td>
+<a href="https://github.com/SERVIR/servir-aces/blob/main/notebooks/prediction_dnn.ipynb"> <img src="https://cloud.google.com/ml-engine/images/github-logo-32px.png" alt="GitHub logo"> View on GitHub </a>
+</td></tr></tbody></table>
+<p><br> <br> <br></p>
+<p>This notebook is also available in this github repo: https://github.com/SERVIR/servir-aces. Navigate to the <code>notebooks</code> folder.</p>
+</section>
+<section id="setup-environment" class="level2">
+<h2 class="anchored" data-anchor-id="setup-environment">Setup environment</h2>
+<div id="cell-5" class="cell" data-outputid="8c7b5321-638d-40bd-d255-d4ca60e9e1ff" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install servir<span class="op">-</span>aces</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Collecting servir-aces
+  Downloading servir_aces-0.0.14-py2.py3-none-any.whl (32 kB)
+Requirement already satisfied: numpy in /usr/local/lib/python3.10/dist-packages (from servir-aces) (1.25.2)
+Requirement already satisfied: tensorflow&gt;=2.9.3 in /usr/local/lib/python3.10/dist-packages (from servir-aces) (2.15.0)
+Requirement already satisfied: earthengine-api in /usr/local/lib/python3.10/dist-packages (from servir-aces) (0.1.399)
+Collecting python-dotenv&gt;=1.0.0 (from servir-aces)
+  Downloading python_dotenv-1.0.1-py3-none-any.whl (19 kB)
+Requirement already satisfied: matplotlib in /usr/local/lib/python3.10/dist-packages (from servir-aces) (3.7.1)
+Requirement already satisfied: absl-py&gt;=1.0.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (1.4.0)
+Requirement already satisfied: astunparse&gt;=1.6.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (1.6.3)
+Requirement already satisfied: flatbuffers&gt;=23.5.26 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (24.3.25)
+Requirement already satisfied: gast!=0.5.0,!=0.5.1,!=0.5.2,&gt;=0.2.1 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (0.5.4)
+Requirement already satisfied: google-pasta&gt;=0.1.1 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (0.2.0)
+Requirement already satisfied: h5py&gt;=2.9.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (3.9.0)
+Requirement already satisfied: libclang&gt;=13.0.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (18.1.1)
+Requirement already satisfied: ml-dtypes~=0.2.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (0.2.0)
+Requirement already satisfied: opt-einsum&gt;=2.3.2 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (3.3.0)
+Requirement already satisfied: packaging in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (24.0)
+Requirement already satisfied: protobuf!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,&lt;5.0.0dev,&gt;=3.20.3 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (3.20.3)
+Requirement already satisfied: setuptools in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (67.7.2)
+Requirement already satisfied: six&gt;=1.12.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (1.16.0)
+Requirement already satisfied: termcolor&gt;=1.1.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (2.4.0)
+Requirement already satisfied: typing-extensions&gt;=3.6.6 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (4.11.0)
+Requirement already satisfied: wrapt&lt;1.15,&gt;=1.11.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (1.14.1)
+Requirement already satisfied: tensorflow-io-gcs-filesystem&gt;=0.23.1 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (0.36.0)
+Requirement already satisfied: grpcio&lt;2.0,&gt;=1.24.3 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (1.62.2)
+Requirement already satisfied: tensorboard&lt;2.16,&gt;=2.15 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (2.15.2)
+Requirement already satisfied: tensorflow-estimator&lt;2.16,&gt;=2.15.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (2.15.0)
+Requirement already satisfied: keras&lt;2.16,&gt;=2.15.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (2.15.0)
+Requirement already satisfied: google-cloud-storage in /usr/local/lib/python3.10/dist-packages (from earthengine-api-&gt;servir-aces) (2.8.0)
+Requirement already satisfied: google-api-python-client&gt;=1.12.1 in /usr/local/lib/python3.10/dist-packages (from earthengine-api-&gt;servir-aces) (2.84.0)
+Requirement already satisfied: google-auth&gt;=1.4.1 in /usr/local/lib/python3.10/dist-packages (from earthengine-api-&gt;servir-aces) (2.27.0)
+Requirement already satisfied: google-auth-httplib2&gt;=0.0.3 in /usr/local/lib/python3.10/dist-packages (from earthengine-api-&gt;servir-aces) (0.1.1)
+Requirement already satisfied: httplib2&lt;1dev,&gt;=0.9.2 in /usr/local/lib/python3.10/dist-packages (from earthengine-api-&gt;servir-aces) (0.22.0)
+Requirement already satisfied: requests in /usr/local/lib/python3.10/dist-packages (from earthengine-api-&gt;servir-aces) (2.31.0)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;servir-aces) (1.2.1)
+Requirement already satisfied: cycler&gt;=0.10 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;servir-aces) (0.12.1)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;servir-aces) (4.51.0)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;servir-aces) (1.4.5)
+Requirement already satisfied: pillow&gt;=6.2.0 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;servir-aces) (9.4.0)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;servir-aces) (3.1.2)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;servir-aces) (2.8.2)
+Requirement already satisfied: wheel&lt;1.0,&gt;=0.23.0 in /usr/local/lib/python3.10/dist-packages (from astunparse&gt;=1.6.0-&gt;tensorflow&gt;=2.9.3-&gt;servir-aces) (0.43.0)
+Requirement already satisfied: google-api-core!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0,&lt;3.0.0dev,&gt;=1.31.5 in /usr/local/lib/python3.10/dist-packages (from google-api-python-client&gt;=1.12.1-&gt;earthengine-api-&gt;servir-aces) (2.11.1)
+Requirement already satisfied: uritemplate&lt;5,&gt;=3.0.1 in /usr/local/lib/python3.10/dist-packages (from google-api-python-client&gt;=1.12.1-&gt;earthengine-api-&gt;servir-aces) (4.1.1)
+Requirement already satisfied: cachetools&lt;6.0,&gt;=2.0.0 in /usr/local/lib/python3.10/dist-packages (from google-auth&gt;=1.4.1-&gt;earthengine-api-&gt;servir-aces) (5.3.3)
+Requirement already satisfied: pyasn1-modules&gt;=0.2.1 in /usr/local/lib/python3.10/dist-packages (from google-auth&gt;=1.4.1-&gt;earthengine-api-&gt;servir-aces) (0.4.0)
+Requirement already satisfied: rsa&lt;5,&gt;=3.1.4 in /usr/local/lib/python3.10/dist-packages (from google-auth&gt;=1.4.1-&gt;earthengine-api-&gt;servir-aces) (4.9)
+Requirement already satisfied: google-auth-oauthlib&lt;2,&gt;=0.5 in /usr/local/lib/python3.10/dist-packages (from tensorboard&lt;2.16,&gt;=2.15-&gt;tensorflow&gt;=2.9.3-&gt;servir-aces) (1.2.0)
+Requirement already satisfied: markdown&gt;=2.6.8 in /usr/local/lib/python3.10/dist-packages (from tensorboard&lt;2.16,&gt;=2.15-&gt;tensorflow&gt;=2.9.3-&gt;servir-aces) (3.6)
+Requirement already satisfied: tensorboard-data-server&lt;0.8.0,&gt;=0.7.0 in /usr/local/lib/python3.10/dist-packages (from tensorboard&lt;2.16,&gt;=2.15-&gt;tensorflow&gt;=2.9.3-&gt;servir-aces) (0.7.2)
+Requirement already satisfied: werkzeug&gt;=1.0.1 in /usr/local/lib/python3.10/dist-packages (from tensorboard&lt;2.16,&gt;=2.15-&gt;tensorflow&gt;=2.9.3-&gt;servir-aces) (3.0.2)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;earthengine-api-&gt;servir-aces) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;earthengine-api-&gt;servir-aces) (3.7)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;earthengine-api-&gt;servir-aces) (2.0.7)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;earthengine-api-&gt;servir-aces) (2024.2.2)
+Requirement already satisfied: google-cloud-core&lt;3.0dev,&gt;=2.3.0 in /usr/local/lib/python3.10/dist-packages (from google-cloud-storage-&gt;earthengine-api-&gt;servir-aces) (2.3.3)
+Requirement already satisfied: google-resumable-media&gt;=2.3.2 in /usr/local/lib/python3.10/dist-packages (from google-cloud-storage-&gt;earthengine-api-&gt;servir-aces) (2.7.0)
+Requirement already satisfied: googleapis-common-protos&lt;2.0.dev0,&gt;=1.56.2 in /usr/local/lib/python3.10/dist-packages (from google-api-core!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0,&lt;3.0.0dev,&gt;=1.31.5-&gt;google-api-python-client&gt;=1.12.1-&gt;earthengine-api-&gt;servir-aces) (1.63.0)
+Requirement already satisfied: requests-oauthlib&gt;=0.7.0 in /usr/local/lib/python3.10/dist-packages (from google-auth-oauthlib&lt;2,&gt;=0.5-&gt;tensorboard&lt;2.16,&gt;=2.15-&gt;tensorflow&gt;=2.9.3-&gt;servir-aces) (1.3.1)
+Requirement already satisfied: google-crc32c&lt;2.0dev,&gt;=1.0 in /usr/local/lib/python3.10/dist-packages (from google-resumable-media&gt;=2.3.2-&gt;google-cloud-storage-&gt;earthengine-api-&gt;servir-aces) (1.5.0)
+Requirement already satisfied: pyasn1&lt;0.7.0,&gt;=0.4.6 in /usr/local/lib/python3.10/dist-packages (from pyasn1-modules&gt;=0.2.1-&gt;google-auth&gt;=1.4.1-&gt;earthengine-api-&gt;servir-aces) (0.6.0)
+Requirement already satisfied: MarkupSafe&gt;=2.1.1 in /usr/local/lib/python3.10/dist-packages (from werkzeug&gt;=1.0.1-&gt;tensorboard&lt;2.16,&gt;=2.15-&gt;tensorflow&gt;=2.9.3-&gt;servir-aces) (2.1.5)
+Requirement already satisfied: oauthlib&gt;=3.0.0 in /usr/local/lib/python3.10/dist-packages (from requests-oauthlib&gt;=0.7.0-&gt;google-auth-oauthlib&lt;2,&gt;=0.5-&gt;tensorboard&lt;2.16,&gt;=2.15-&gt;tensorflow&gt;=2.9.3-&gt;servir-aces) (3.2.2)
+Installing collected packages: python-dotenv, servir-aces
+Successfully installed python-dotenv-1.0.1 servir-aces-0.0.14</code></pre>
+</div>
+</div>
+<div id="cell-6" class="cell" data-outputid="7a30c5b7-0321-4243-c047-fc40602b64cb" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>SERVIR<span class="op">/</span>servir<span class="op">-</span>aces</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cloning into 'servir-aces'...
+remote: Enumerating objects: 731, done.
+remote: Counting objects: 100% (90/90), done.
+remote: Compressing objects: 100% (50/50), done.
+remote: Total 731 (delta 55), reused 40 (delta 40), pack-reused 641
+Receiving objects: 100% (731/731), 3.35 MiB | 17.98 MiB/s, done.
+Resolving deltas: 100% (478/478), done.</code></pre>
+</div>
+</div>
+<p>Now the repo is downloaded. We will create an environment file file to place point to our training data and customize parameters for the model. To do this, we make a copy of the <code>.env.example</code> file provided.</p>
+<p>Under the hood, all the configuration provided via the environment file are parsed as a config object and can be accessed programatically.</p>
+<p>Note current version does not expose all the model intracacies through the environment file but future version may include those depending on the need.</p>
+<div id="cell-8" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cp servir<span class="op">-</span>aces<span class="op">/</span>.env.example servir<span class="op">-</span>aces<span class="op">/</span>config.env</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-9" class="cell" data-outputid="d2da714a-7bb6-4b28-a49f-6c1b154a7257" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> drive</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>drive.mount(<span class="st">"/content/drive"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mounted at /content/drive</code></pre>
+</div>
+</div>
+</section>
+<section id="setup-config-file-variables" class="level2">
+<h2 class="anchored" data-anchor-id="setup-config-file-variables">Setup config file variables</h2>
+<p>Okay, now we have the <code>config.env</code> file, we will use this to provide our environments and parameters.</p>
+<p>Note there are several parameters that can be changed. Let’s start by changing the BASEDIR as below. Also since we already have the model, let’s specify that path using the <code>OUTPUT_DIR</code>.</p>
+<pre><code>BASEDIR = "/content/"
+OUTPUT_DIR = "/content/drive/MyDrive/Colab Notebooks/DL_Book/Chapter_1/output"</code></pre>
+<p>For the prediction, we are using growing season and pre-growing season information. Thus, we have 8 optical bands, namely <code>red_before</code>, <code>green_before</code>, <code>blue_before</code>, <code>nir_before</code>, <code>red_during</code>, <code>green_during</code>, <code>blue_during</code>, and <code>nir_during</code>. In adidition, you can use <code>USE_ELEVATION</code> and <code>USE_S1</code> config to include the topographic and radar information. Since currently we are not including these, so we won’t be settting these config values.</p>
+<p>Similarly, we are using 256x256 pixels, so let’s also change that. In addition, if you want to keep buffer on the export images buffer for prediction purpose, you can use <code>KERNEL_BUFFER</code> to specify that. Half this will extend on the sides of each patch. You can specify the size as tupe (e.g.&nbsp;72 x 72). If zero is used; it will not buffer. I will keep this to zero one this one.</p>
+<pre><code># For model training, USE_ELEVATION extends FEATURES with "elevation" &amp; "slope"
+# USE_S1 extends FEATURES with "vv_asc_before", "vh_asc_before", "vv_asc_during", "vh_asc_during",
+# "vv_desc_before", "vh_desc_before", "vv_desc_during", "vh_desc_during"
+# In case these are not useful and you have other bands in your training data, you can do set
+# USE_ELEVATION and USE_S1 to False and update FEATURES to include needed bands
+USE_ELEVATION = False
+USE_S1 = False
+
+PATCH_SHAPE = (256, 256)
+
+KERNEL_BUFFER = 0</code></pre>
+<p>Next, we will specify the <code>MODEL_DIR_NAME</code>. The <code>MODEL_DIR</code> is then constructed as MODEL_DIR = OUTPUT_DIR / MODEL_DIR_NAME. The <code>MODEL_DIR_NAME</code> in my case is <code>unet_v1</code>, so we will use that. Similarly, you can specify your output of the file from the prediction using <code>OUTPUT_NAME</code> variable. We also need to specify this is the DNN model that we want to run. We have <code>MODEL_TYPE</code> parameter for that. Currently, it supports unet, dnn, and cnn (case sensitive) models; default being unet. Make other changes, as appropriate.</p>
+<p>Other config to change are <code>GCS_PROJECT</code>, <code>GCS_BUCKET</code>, <code>GCS_IMAGE_DIR</code>, and <code>GCS_IMAGE_PREFIX</code> (for prediction image direction, see this <a href="https://colab.research.google.com/drive/1MZexam3GZKsQySQO9Jk_RPNyyMLmciEq?usp=drive_link">notebook</a>). For exporting our prediction to the GEE Asset, we will use <code>EE_OUTPUT_ASSET</code> to update it.</p>
+<pre><code>MODEL_DIR_NAME = "dnn_v1"
+OUTPUT_NAME = "prediction_dnn_v1"
+GCS_BUCKET = "dl-book"
+MODEL_TYPE = "dnn"
+
+
+# GCS settings
+GCS_PROJECT = "servir-ee"
+# prediction image directory
+GCS_IMAGE_DIR = "chapter-1/images"
+# prediction image prefix
+GCS_IMAGE_PREFIX = "image_2021"
+
+# where the prediction output will be stored
+EE_OUTPUT_ASSET = "projects/servir-ee/assets/dl-book/chapter-1/prediction"</code></pre>
+</section>
+<section id="update-the-config-file-programtically" class="level2">
+<h2 class="anchored" data-anchor-id="update-the-config-file-programtically">Update the config file programtically</h2>
+<p>Let’s make a dictionary so we can change these config settings programatically.</p>
+<div id="cell-16" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>BASEDIR <span class="op">=</span> <span class="st">"/content/"</span> <span class="co"># @param {type:"string"}</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>OUTPUT_DIR <span class="op">=</span> <span class="st">"/content/drive/MyDrive/Colab Notebooks/DL_Book/Chapter_1/output"</span> <span class="co"># @param {type:"string"}</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># DATADIR = "datasets/dnn_planet_wo_indices" # @param {type:"string"}</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># PATCH_SHAPE, USE_ELEVATION, USE_S1</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># BATCH_SIZE, EPOCHS are converted to their appropriate type.</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>USE_ELEVATION <span class="op">=</span> <span class="st">"False"</span> <span class="co"># @param {type:"string"}</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>USE_S1 <span class="op">=</span> <span class="st">"False"</span> <span class="co"># @param {type:"string"}</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>PATCH_SHAPE <span class="op">=</span> <span class="st">"(256, 256)"</span> <span class="co"># @param {type:"string"}</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>KERNEL_BUFFER <span class="op">=</span> <span class="st">"0"</span> <span class="co"># @param {type:"string"}</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>MODEL_DIR_NAME <span class="op">=</span> <span class="st">"dnn_v1"</span> <span class="co"># @param {type:"string"}</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>OUTPUT_NAME <span class="op">=</span> <span class="st">"prediction_dnn_v1"</span> <span class="co"># @param {type:"string"}</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>GCS_BUCKET <span class="op">=</span> <span class="st">"dl-book"</span> <span class="co"># @param {type:"string"}</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>MODEL_TYPE <span class="op">=</span> <span class="st">"dnn"</span> <span class="co"># @param {type:"string"}</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co"># GCS settings</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>GCS_PROJECT <span class="op">=</span> <span class="st">"servir-ee"</span> <span class="co"># @param {type:"string"}</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co"># prediction image directory</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>GCS_IMAGE_DIR <span class="op">=</span> <span class="st">"chapter-1/images"</span> <span class="co"># @param {type:"string"}</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co"># prediction image prefix</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>GCS_IMAGE_PREFIX <span class="op">=</span> <span class="st">"image_2021"</span> <span class="co"># @param {type:"string"}</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co"># where the prediction output will be stored</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>EE_OUTPUT_ASSET <span class="op">=</span> <span class="st">"projects/servir-ee/assets/dl-book/chapter-1/prediction"</span> <span class="co"># @param {type:"string"}</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-17" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>config_settings <span class="op">=</span> {</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"BASEDIR"</span> : BASEDIR,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"OUTPUT_DIR"</span>: OUTPUT_DIR,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"USE_ELEVATION"</span>: USE_ELEVATION,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"USE_S1"</span>: USE_S1,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"PATCH_SHAPE"</span>: PATCH_SHAPE,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"KERNEL_BUFFER"</span>: KERNEL_BUFFER,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"MODEL_DIR_NAME"</span>: MODEL_DIR_NAME,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"OUTPUT_NAME"</span>: OUTPUT_NAME,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"GCS_PROJECT"</span>: GCS_PROJECT,</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"MODEL_TYPE"</span>: MODEL_TYPE,</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"GCS_BUCKET"</span>: GCS_BUCKET,</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"GCS_IMAGE_DIR"</span>: GCS_IMAGE_DIR,</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"GCS_IMAGE_PREFIX"</span>: GCS_IMAGE_PREFIX,</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"EE_OUTPUT_ASSET"</span>: EE_OUTPUT_ASSET,</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-18" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dotenv</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>config_file <span class="op">=</span> <span class="st">"servir-aces/config.env"</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> config_key <span class="kw">in</span> config_settings:</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    dotenv.set_key(dotenv_path<span class="op">=</span>config_file,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>                   key_to_set<span class="op">=</span>config_key,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>                   value_to_set<span class="op">=</span>config_settings[config_key]</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>                   )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="load-config-file-variables" class="level2">
+<h2 class="anchored" data-anchor-id="load-config-file-variables">Load config file variables</h2>
+<div id="cell-20" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aces <span class="im">import</span> Config, EEUtils</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> subprocess</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-21" class="cell" data-outputid="2799462d-1fc6-4793-c195-2b40f15b56ea" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>config <span class="op">=</span> Config(config_file)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>BASEDIR: /content
+DATADIR: /content/data
+using features: ['red_before', 'green_before', 'blue_before', 'nir_before', 'red_during', 'green_during', 'blue_during', 'nir_during']
+using labels: ['class']</code></pre>
+</div>
+</div>
+<div id="cell-22" class="cell" data-outputid="d7808b4f-6d31-4bd1-fc94-c0686bac9439" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>OUTPUT_IMAGE_FILE <span class="op">=</span> <span class="bu">str</span>(config.MODEL_DIR <span class="op">/</span> <span class="st">"prediction"</span> <span class="op">/</span> <span class="ss">f"</span><span class="sc">{</span>config<span class="sc">.</span>OUTPUT_NAME<span class="sc">}</span><span class="ss">.TFRecord"</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"OUTPUT_IMAGE_FILE: </span><span class="sc">{</span>OUTPUT_IMAGE_FILE<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>OUTPUT_IMAGE_FILE: /content/drive/MyDrive/Colab Notebooks/DL_Book/Chapter_1/output/dnn_v1/prediction/prediction_dnn_v1.TFRecord</code></pre>
+</div>
+</div>
+</section>
+<section id="get-files-for-export" class="level2">
+<h2 class="anchored" data-anchor-id="get-files-for-export">Get files for export</h2>
+<div id="cell-24" class="cell" data-outputid="7483e7a2-5259-4514-a96c-52fb3f937e3e" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>ls <span class="op">=</span> <span class="ss">f"gsutil ls gs://</span><span class="sc">{</span>config<span class="sc">.</span>GCS_BUCKET<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>config<span class="sc">.</span>GCS_IMAGE_DIR<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"ls &gt;&gt; : </span><span class="sc">{</span>ls<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>files_list <span class="op">=</span> subprocess.check_output(ls, shell<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>files_list <span class="op">=</span> files_list.decode(<span class="st">"utf-8"</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>files_list <span class="op">=</span> files_list.split(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ls &gt;&gt; : gsutil ls gs://dl-book/chapter-1/images</code></pre>
+</div>
+</div>
+<div id="cell-25" class="cell" data-outputid="f5543391-02a8-4311-ab9f-07baf3f6d4d6" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>files_list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>['gs://dl-book/chapter-1/images/',
+ 'gs://dl-book/chapter-1/images/image_202100000.tfrecord.gz',
+ 'gs://dl-book/chapter-1/images/image_202100001.tfrecord.gz',
+ 'gs://dl-book/chapter-1/images/image_202100002.tfrecord.gz',
+ 'gs://dl-book/chapter-1/images/image_202100003.tfrecord.gz',
+ 'gs://dl-book/chapter-1/images/image_202100004.tfrecord.gz',
+ 'gs://dl-book/chapter-1/images/image_202100005.tfrecord.gz',
+ 'gs://dl-book/chapter-1/images/image_2021mixer.json',
+ '']</code></pre>
+</div>
+</div>
+<div id="cell-26" class="cell" data-outputid="04a32ae5-4725-47be-accd-bea1a702a5f2" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get only the files generated by the image export.</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>exported_files_list <span class="op">=</span> [s <span class="cf">for</span> s <span class="kw">in</span> files_list <span class="cf">if</span> config.GCS_IMAGE_PREFIX <span class="kw">in</span> s]</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"exported_files_list: </span><span class="sc">{</span>exported_files_list<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>exported_files_list: ['gs://dl-book/chapter-1/images/image_202100000.tfrecord.gz', 'gs://dl-book/chapter-1/images/image_202100001.tfrecord.gz', 'gs://dl-book/chapter-1/images/image_202100002.tfrecord.gz', 'gs://dl-book/chapter-1/images/image_202100003.tfrecord.gz', 'gs://dl-book/chapter-1/images/image_202100004.tfrecord.gz', 'gs://dl-book/chapter-1/images/image_202100005.tfrecord.gz', 'gs://dl-book/chapter-1/images/image_2021mixer.json']</code></pre>
+</div>
+</div>
+</section>
+<section id="get-the-list-of-image-files-and-the-json-mixer-file." class="level2">
+<h2 class="anchored" data-anchor-id="get-the-list-of-image-files-and-the-json-mixer-file.">Get the list of image files and the JSON mixer file.</h2>
+<div id="cell-28" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>image_files_list <span class="op">=</span> []</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>json_file <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> exported_files_list:</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> f.endswith(<span class="st">".tfrecord.gz"</span>):</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>        image_files_list.append(f)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> f.endswith(<span class="st">".json"</span>):</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>        json_file <span class="op">=</span> f</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-29" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure the files are in the right order.</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>image_files_list.sort()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-30" class="cell" data-outputid="03a80a20-ae50-469e-f688-04a8939b5b5d" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"image_files_list: </span><span class="sc">{</span>image_files_list<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"json_file: </span><span class="sc">{</span>json_file<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>image_files_list: ['gs://dl-book/chapter-1/images/image_202100000.tfrecord.gz', 'gs://dl-book/chapter-1/images/image_202100001.tfrecord.gz', 'gs://dl-book/chapter-1/images/image_202100002.tfrecord.gz', 'gs://dl-book/chapter-1/images/image_202100003.tfrecord.gz', 'gs://dl-book/chapter-1/images/image_202100004.tfrecord.gz', 'gs://dl-book/chapter-1/images/image_202100005.tfrecord.gz']
+json_file: gs://dl-book/chapter-1/images/image_2021mixer.json</code></pre>
+</div>
+</div>
+<div id="cell-31" class="cell" data-outputid="d2f8752c-ecb3-478c-a594-8a39e52d32ac" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Loading model from </span><span class="sc">{</span><span class="bu">str</span>(config.MODEL_DIR)<span class="sc">}</span><span class="ss">/trained-model"</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>this_model <span class="op">=</span> tf.keras.models.load_model(<span class="ss">f"</span><span class="sc">{</span><span class="bu">str</span>(config.MODEL_DIR)<span class="sc">}</span><span class="ss">/trained-model"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Loading model from /content/drive/MyDrive/Colab Notebooks/DL_Book/Chapter_1/output/dnn_v1/trained-model</code></pre>
+</div>
+</div>
+<div id="cell-32" class="cell" data-outputid="1908ec7d-e4ba-441a-8265-9dcc4cc1ef8e" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>this_model.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model: "model"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ input_layer (InputLayer)    [(None, None, 8)]         0         
+                                                                 
+ dense (Dense)               (None, None, 256)         2304      
+                                                                 
+ dropout (Dropout)           (None, None, 256)         0         
+                                                                 
+ dense_1 (Dense)             (None, None, 128)         32896     
+                                                                 
+ dropout_1 (Dropout)         (None, None, 128)         0         
+                                                                 
+ dense_2 (Dense)             (None, None, 64)          8256      
+                                                                 
+ dropout_2 (Dropout)         (None, None, 64)          0         
+                                                                 
+ dense_3 (Dense)             (None, None, 32)          2080      
+                                                                 
+ dropout_3 (Dropout)         (None, None, 32)          0         
+                                                                 
+ dense_4 (Dense)             (None, None, 5)           165       
+                                                                 
+=================================================================
+Total params: 45701 (178.52 KB)
+Trainable params: 45701 (178.52 KB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________</code></pre>
+</div>
+</div>
+</section>
+<section id="get-relevant-info-from-the-json-mixer-file." class="level2">
+<h2 class="anchored" data-anchor-id="get-relevant-info-from-the-json-mixer-file.">Get relevant info from the JSON mixer file.</h2>
+<div id="cell-34" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>cat <span class="op">=</span> <span class="ss">f"gsutil cat </span><span class="sc">{</span>json_file<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>read_t <span class="op">=</span> subprocess.check_output(cat, shell<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>read_t <span class="op">=</span> read_t.decode(<span class="st">"utf-8"</span>)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Get a single string w/ newlines from the IPython.utils.text.SList</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>mixer <span class="op">=</span> json.loads(read_t)</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Get relevant info from the JSON mixer file.</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>patch_width <span class="op">=</span> mixer[<span class="st">"patchDimensions"</span>][<span class="dv">0</span>]</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>patch_height <span class="op">=</span> mixer[<span class="st">"patchDimensions"</span>][<span class="dv">1</span>]</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>patches <span class="op">=</span> mixer[<span class="st">"totalPatches"</span>]</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>patch_dimensions_flat <span class="op">=</span> [patch_width <span class="op">*</span> patch_height, <span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="load-the-buffer-size-for-prediction" class="level2">
+<h2 class="anchored" data-anchor-id="load-the-buffer-size-for-prediction">Load the buffer size for prediction</h2>
+<div id="cell-36" class="cell" data-outputid="2acb6538-a6f2-4378-ef71-1728abd405ea" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> config.KERNEL_BUFFER:</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    x_buffer <span class="op">=</span> config.KERNEL_BUFFER[<span class="dv">0</span>] <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    y_buffer <span class="op">=</span> config.KERNEL_BUFFER[<span class="dv">1</span>] <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    buffered_shape <span class="op">=</span> [</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>        config.PATCH_SHAPE[<span class="dv">0</span>] <span class="op">+</span> config.KERNEL_BUFFER[<span class="dv">0</span>],</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>        config.PATCH_SHAPE[<span class="dv">1</span>] <span class="op">+</span> config.KERNEL_BUFFER[<span class="dv">1</span>],</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>    x_buffer <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>    y_buffer <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>    buffered_shape <span class="op">=</span> config.PATCH_SHAPE</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"buffered_shape: </span><span class="sc">{</span>buffered_shape<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>buffered_shape: (256, 256)</code></pre>
+</div>
+</div>
+</section>
+<section id="setup-features" class="level2">
+<h2 class="anchored" data-anchor-id="setup-features">Setup features</h2>
+<div id="cell-38" class="cell" data-outputid="a9a74389-d142-4bc8-f334-767c2b96f86c" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> config.USE_ELEVATION:</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    config.FEATURES.extend([<span class="st">"elevation"</span>, <span class="st">"slope"</span>])</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> config.USE_S1:</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    config.FEATURES.extend([<span class="st">"vv_asc_before"</span>, <span class="st">"vh_asc_before"</span>, <span class="st">"vv_asc_during"</span>, <span class="st">"vh_asc_during"</span>,</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"vv_desc_before"</span>, <span class="st">"vh_desc_before"</span>, <span class="st">"vv_desc_during"</span>, <span class="st">"vh_desc_during"</span>])</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Config.FEATURES: </span><span class="sc">{</span>config<span class="sc">.</span>FEATURES<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Config.FEATURES: ['red_before', 'green_before', 'blue_before', 'nir_before', 'red_during', 'green_during', 'blue_during', 'nir_during']</code></pre>
+</div>
+</div>
+<section id="some-useful-functions" class="level3">
+<h3 class="anchored" data-anchor-id="some-useful-functions">Some useful functions</h3>
+<div id="cell-40" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> parse_image(example_proto):</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    columns <span class="op">=</span> [</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>        tf.io.FixedLenFeature(shape<span class="op">=</span>patch_dimensions_flat, dtype<span class="op">=</span>tf.float32) <span class="cf">for</span> k <span class="kw">in</span> config.FEATURES</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    image_features_dict <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(config.FEATURES, columns))</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> tf.io.parse_single_example(example_proto, image_features_dict)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="create-a-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="create-a-dataset">Create a dataset</h2>
+<div id="cell-42" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dataset from the TFRecord file(s) in Cloud Storage.</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>image_dataset <span class="op">=</span> tf.data.TFRecordDataset(image_files_list, compression_type<span class="op">=</span><span class="st">"GZIP"</span>)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>image_dataset <span class="op">=</span> image_dataset.<span class="bu">map</span>(parse_image, num_parallel_calls<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Break our long tensors into many little ones.</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>image_dataset <span class="op">=</span> image_dataset.flat_map(</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">lambda</span> features: tf.data.Dataset.from_tensor_slices(features)</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn the dictionary in each record into a tuple without a label.</span></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>image_dataset <span class="op">=</span> image_dataset.<span class="bu">map</span>(</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">lambda</span> data_dict: (tf.transpose(<span class="bu">list</span>(data_dict.values())), )</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>image_dataset <span class="op">=</span> image_dataset.batch(patch_width <span class="op">*</span> patch_height)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="perform-inference" class="level2">
+<h2 class="anchored" data-anchor-id="perform-inference">Perform Inference</h2>
+<div id="cell-44" class="cell" data-outputid="6a03f20f-fd02-4580-e0ef-1d9634e3e69b" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> this_model.predict(image_dataset, steps<span class="op">=</span>patches, verbose<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"predictions shape: </span><span class="sc">{</span>predictions<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>252/252 [==============================] - 486s 2s/step
+predictions shape: (16515072, 1, 5)</code></pre>
+</div>
+</div>
+</section>
+<section id="write-predictions" class="level2">
+<h2 class="anchored" data-anchor-id="write-predictions">Write Predictions</h2>
+<div id="cell-46" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the target directory if it doesn't exist</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>Path(OUTPUT_IMAGE_FILE).parent.mkdir(parents<span class="op">=</span><span class="va">True</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-47" class="cell" data-outputid="4aa3ae7a-ac6f-4bc4-8731-ea6590568716">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Writing predictions to </span><span class="sc">{</span>OUTPUT_IMAGE_FILE<span class="sc">}</span><span class="ss"> ..."</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>writer <span class="op">=</span> tf.io.TFRecordWriter(OUTPUT_IMAGE_FILE)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Every patch-worth of predictions we"ll dump an example into the output</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="co"># file with a single feature that holds our predictions. Since our predictions</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="co"># are already in the order of the exported data, the patches we create here</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="co"># will also be in the right order.</span></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>patch <span class="op">=</span> [[], [], [], [], [], []]</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>cur_patch <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, prediction <span class="kw">in</span> <span class="bu">enumerate</span>(predictions):</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>    patch[<span class="dv">0</span>].append(<span class="bu">int</span>(np.argmax(prediction)))</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>    patch[<span class="dv">1</span>].append(prediction[<span class="dv">0</span>][<span class="dv">0</span>])</span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>    patch[<span class="dv">2</span>].append(prediction[<span class="dv">0</span>][<span class="dv">1</span>])</span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>    patch[<span class="dv">3</span>].append(prediction[<span class="dv">0</span>][<span class="dv">2</span>])</span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>    patch[<span class="dv">4</span>].append(prediction[<span class="dv">0</span>][<span class="dv">3</span>])</span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>    patch[<span class="dv">5</span>].append(prediction[<span class="dv">0</span>][<span class="dv">4</span>])</span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"prediction.shape: </span><span class="sc">{</span>prediction<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="bu">len</span>(patch[<span class="dv">0</span>]) <span class="op">==</span> patch_width <span class="op">*</span> patch_height):</span>
+<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> cur_patch <span class="op">%</span> <span class="dv">100</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"Done with patch "</span> <span class="op">+</span> <span class="bu">str</span>(cur_patch) <span class="op">+</span> <span class="st">" of "</span> <span class="op">+</span> <span class="bu">str</span>(patches) <span class="op">+</span> <span class="st">"..."</span>)</span>
+<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a>        example <span class="op">=</span> tf.train.Example(</span>
+<span id="cb44-29"><a href="#cb44-29" aria-hidden="true" tabindex="-1"></a>            features<span class="op">=</span>tf.train.Features(</span>
+<span id="cb44-30"><a href="#cb44-30" aria-hidden="true" tabindex="-1"></a>                feature<span class="op">=</span>{</span>
+<span id="cb44-31"><a href="#cb44-31" aria-hidden="true" tabindex="-1"></a>                <span class="st">"prediction"</span>: tf.train.Feature(</span>
+<span id="cb44-32"><a href="#cb44-32" aria-hidden="true" tabindex="-1"></a>                    int64_list<span class="op">=</span>tf.train.Int64List(</span>
+<span id="cb44-33"><a href="#cb44-33" aria-hidden="true" tabindex="-1"></a>                        value<span class="op">=</span>patch[<span class="dv">0</span>])),</span>
+<span id="cb44-34"><a href="#cb44-34" aria-hidden="true" tabindex="-1"></a>                <span class="st">"cropland_etc"</span>: tf.train.Feature(</span>
+<span id="cb44-35"><a href="#cb44-35" aria-hidden="true" tabindex="-1"></a>                    float_list<span class="op">=</span>tf.train.FloatList(</span>
+<span id="cb44-36"><a href="#cb44-36" aria-hidden="true" tabindex="-1"></a>                        value<span class="op">=</span>patch[<span class="dv">1</span>])),</span>
+<span id="cb44-37"><a href="#cb44-37" aria-hidden="true" tabindex="-1"></a>                <span class="st">"rice"</span>: tf.train.Feature(</span>
+<span id="cb44-38"><a href="#cb44-38" aria-hidden="true" tabindex="-1"></a>                    float_list<span class="op">=</span>tf.train.FloatList(</span>
+<span id="cb44-39"><a href="#cb44-39" aria-hidden="true" tabindex="-1"></a>                        value<span class="op">=</span>patch[<span class="dv">2</span>])),</span>
+<span id="cb44-40"><a href="#cb44-40" aria-hidden="true" tabindex="-1"></a>                <span class="st">"forest"</span>: tf.train.Feature(</span>
+<span id="cb44-41"><a href="#cb44-41" aria-hidden="true" tabindex="-1"></a>                    float_list<span class="op">=</span>tf.train.FloatList(</span>
+<span id="cb44-42"><a href="#cb44-42" aria-hidden="true" tabindex="-1"></a>                        value<span class="op">=</span>patch[<span class="dv">3</span>])),</span>
+<span id="cb44-43"><a href="#cb44-43" aria-hidden="true" tabindex="-1"></a>                <span class="st">"urban"</span>: tf.train.Feature(</span>
+<span id="cb44-44"><a href="#cb44-44" aria-hidden="true" tabindex="-1"></a>                    float_list<span class="op">=</span>tf.train.FloatList(</span>
+<span id="cb44-45"><a href="#cb44-45" aria-hidden="true" tabindex="-1"></a>                        value<span class="op">=</span>patch[<span class="dv">4</span>])),</span>
+<span id="cb44-46"><a href="#cb44-46" aria-hidden="true" tabindex="-1"></a>                <span class="st">"others_etc"</span>: tf.train.Feature(</span>
+<span id="cb44-47"><a href="#cb44-47" aria-hidden="true" tabindex="-1"></a>                    float_list<span class="op">=</span>tf.train.FloatList(</span>
+<span id="cb44-48"><a href="#cb44-48" aria-hidden="true" tabindex="-1"></a>                        value<span class="op">=</span>patch[<span class="dv">5</span>])),</span>
+<span id="cb44-49"><a href="#cb44-49" aria-hidden="true" tabindex="-1"></a>                }</span>
+<span id="cb44-50"><a href="#cb44-50" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb44-51"><a href="#cb44-51" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb44-52"><a href="#cb44-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-53"><a href="#cb44-53" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Write the example to the file and clear our patch array so it"s ready for</span></span>
+<span id="cb44-54"><a href="#cb44-54" aria-hidden="true" tabindex="-1"></a>        <span class="co"># another batch of class ids</span></span>
+<span id="cb44-55"><a href="#cb44-55" aria-hidden="true" tabindex="-1"></a>        writer.write(example.SerializeToString())</span>
+<span id="cb44-56"><a href="#cb44-56" aria-hidden="true" tabindex="-1"></a>        patch <span class="op">=</span> [[], [], [], [], [], []]</span>
+<span id="cb44-57"><a href="#cb44-57" aria-hidden="true" tabindex="-1"></a>        cur_patch <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb44-58"><a href="#cb44-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-59"><a href="#cb44-59" aria-hidden="true" tabindex="-1"></a>writer.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Writing predictions to /content/drive/MyDrive/Colab Notebooks/DL_Book/Chapter_1/output/dnn_v1/prediction/prediction_dnn_v1.TFRecord ...
+prediction.shape: (1, 5)
+Done with patch 100 of 252...
+Done with patch 200 of 252...</code></pre>
+</div>
+</div>
+</section>
+<section id="upload-to-google-earth-engine-gee" class="level2">
+<h2 class="anchored" data-anchor-id="upload-to-google-earth-engine-gee">Upload to Google Earth Engine (GEE)</h2>
+<p>Now we have write the prediction to the <code>OUTPUT_IMAGE_FILE</code>. You can upload this to GEE for visualization. To do this, you will need to upload to GCP and then to GEE.</p>
+<p>Make sure you have proper permission</p>
+<div id="cell-51" class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cloud authentication.</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> auth</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>auth.authenticate_user()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-52" class="cell" data-outputid="896d2c97-5637-4602-f092-172676499f4b">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>OUTPUT_GCS_PATH <span class="op">=</span> <span class="ss">f"gs://</span><span class="sc">{</span>config<span class="sc">.</span>GCS_BUCKET<span class="sc">}</span><span class="ss">/chapter-1/prediction/</span><span class="sc">{</span>config<span class="sc">.</span>OUTPUT_NAME<span class="sc">}</span><span class="ss">.TFRecord"</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"OUTPUT_GCS_PATH: </span><span class="sc">{</span>OUTPUT_GCS_PATH<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>OUTPUT_GCS_PATH: gs://dl-book/chapter-1/prediction/prediction_dnn_v1.TFRecord</code></pre>
+</div>
+</div>
+<div id="cell-53" class="cell" data-outputid="70277404-b4ef-48f1-8d93-9cda98cc2e3d">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># upload to gcp</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>upload_to_gcp <span class="op">=</span> <span class="ss">f'gsutil cp "</span><span class="sc">{</span>OUTPUT_IMAGE_FILE<span class="sc">}</span><span class="ss">" "</span><span class="sc">{</span>OUTPUT_GCS_PATH<span class="sc">}</span><span class="ss">"'</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"upload_to_gcp: </span><span class="sc">{</span>upload_to_gcp<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> subprocess.check_output(upload_to_gcp, shell<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"uploading classified image to gcp: </span><span class="sc">{</span>result<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>upload_to_gcp: gsutil cp "/content/drive/MyDrive/Colab Notebooks/DL_Book/Chapter_1/output/dnn_v1/prediction/prediction_dnn_v1.TFRecord" "gs://dl-book/chapter-1/prediction/prediction_dnn_v1.TFRecord"
+uploading classified image to gcp: b''</code></pre>
+</div>
+</div>
+<p>Next we will upload this to the GEE asset.</p>
+<div id="cell-55" class="cell" data-outputid="2f10d441-f8f3-4b41-eccc-a292af078374">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>config.EE_OUTPUT_ASSET, OUTPUT_GCS_PATH</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="31">
+<pre><code>('projects/servir-ee/assets/dl-book/chapter-1/prediction',
+ 'gs://dl-book/chapter-1/prediction/prediction_dnn_v1.TFRecord')</code></pre>
+</div>
+</div>
+<p>Make sure you have proper permission.</p>
+<div id="cell-57" class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import, authenticate and initialize the Earth Engine library.</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ee</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>ee.Authenticate()</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ee.Initialize(project=f"{config.GCS_PROJECT}")</span></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>EEUtils.initialize_session(use_highvolume<span class="op">=</span><span class="va">True</span>, project<span class="op">=</span>config.GCS_PROJECT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-58" class="cell" data-outputid="897af55d-62d7-45e5-863e-cf4fffadd01d">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>earthengine set_project {config.GCS_PROJECT}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Successfully saved project id</code></pre>
+</div>
+</div>
+<div id="cell-59" class="cell" data-outputid="f7244a00-546b-4c3f-ceed-7452c13d998d">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>upload_image <span class="op">=</span> <span class="ss">f"earthengine upload image --asset_id=</span><span class="sc">{</span>config<span class="sc">.</span>EE_OUTPUT_ASSET<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>config<span class="sc">.</span>OUTPUT_NAME<span class="sc">}</span><span class="ss"> --pyramiding_policy=mode </span><span class="sc">{</span>OUTPUT_GCS_PATH<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>json_file<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> subprocess.check_output(upload_image, shell<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"uploading classified image to earth engine: </span><span class="sc">{</span>result<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>uploading classified image to earth engine: b'Started upload task with ID: DONA7JAK47ZXTNYMQNJLYE34\n'</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
