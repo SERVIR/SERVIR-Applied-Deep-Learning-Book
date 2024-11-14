@@ -1,7 +1,7 @@
 project:
   type: website
   output-dir: docs
-  repo-url: https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book
+  repo-url: https://servir.github.io/SERVIR-Applied-Deep-Learning-Book/
 
 website:
   title: "Quarto_Website"
