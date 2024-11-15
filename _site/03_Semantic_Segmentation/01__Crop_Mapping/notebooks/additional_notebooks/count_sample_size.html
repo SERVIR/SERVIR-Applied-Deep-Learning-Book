@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Rice mapping in Bhutan with U-Net using high resolution satellite imagery – SERVIR Applied Deep Learning Book</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../../">
+<script src="../../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../../index.html">
+    <span class="navbar-title">SERVIR Applied Deep Learning Book</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../chapters/index.qmd"> 
+<span class="menu-text">Chapters</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../../resources.qmd"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Rice mapping in Bhutan with U-Net using high resolution satellite imagery</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="cell-1" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Copyright 2024 NASA</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Licensed under the Apache License, Version 2.0 (the "License");</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># you may not use this file except in compliance with the License.</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># You may obtain a copy of the License at</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#     https://www.apache.org/licenses/LICENSE-2.0</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Unless required by applicable law or agreed to in writing, software</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># distributed under the License is distributed on an "AS IS" BASIS,</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># See the License for the specific language governing permissions and</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># limitations under the License.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="this-notebook-shows-an-example-of-counting-the-sample-size-from-the-tfrecords" class="level3">
+<h3 class="anchored" data-anchor-id="this-notebook-shows-an-example-of-counting-the-sample-size-from-the-tfrecords">This notebook shows an example of counting the sample size from the <code>tfrecords</code></h3>
+<table align="left">
+<tbody><tr><td>
+<a href="https://colab.research.google.com/github/SERVIR/servir-aces/blob/main/notebooks/count_sample_size.ipynb"> <img src="https://cloud.google.com/ml-engine/images/colab-logo-32px.png" alt="Colab logo"> Run in Colab </a>
+</td>
+<td>
+<a href="https://github.com/SERVIR/servir-aces/blob/main/notebooks/count_sample_size.ipynb"> <img src="https://cloud.google.com/ml-engine/images/github-logo-32px.png" alt="GitHub logo"> View on GitHub </a>
+</td></tr></tbody></table>
+<p><br> <br> <br></p>
+<p>This notebook is also available in this github repo: https://github.com/SERVIR/servir-aces. Navigate to the <code>notebooks</code> folder.</p>
+</section>
+<section id="setup-environment" class="level2">
+<h2 class="anchored" data-anchor-id="setup-environment">Setup environment</h2>
+<div id="cell-5" class="cell" data-outputid="427ef2d6-e718-4b10-f1d1-e19dfeaba07c" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install servir<span class="op">-</span>aces</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Collecting servir-aces
+  Downloading servir_aces-0.0.14-py2.py3-none-any.whl (32 kB)
+Requirement already satisfied: numpy in /usr/local/lib/python3.10/dist-packages (from servir-aces) (1.25.2)
+Requirement already satisfied: tensorflow&gt;=2.9.3 in /usr/local/lib/python3.10/dist-packages (from servir-aces) (2.15.0)
+Requirement already satisfied: earthengine-api in /usr/local/lib/python3.10/dist-packages (from servir-aces) (0.1.399)
+Collecting python-dotenv&gt;=1.0.0 (from servir-aces)
+  Downloading python_dotenv-1.0.1-py3-none-any.whl (19 kB)
+Requirement already satisfied: matplotlib in /usr/local/lib/python3.10/dist-packages (from servir-aces) (3.7.1)
+Requirement already satisfied: absl-py&gt;=1.0.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (1.4.0)
+Requirement already satisfied: astunparse&gt;=1.6.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (1.6.3)
+Requirement already satisfied: flatbuffers&gt;=23.5.26 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (24.3.25)
+Requirement already satisfied: gast!=0.5.0,!=0.5.1,!=0.5.2,&gt;=0.2.1 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (0.5.4)
+Requirement already satisfied: google-pasta&gt;=0.1.1 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (0.2.0)
+Requirement already satisfied: h5py&gt;=2.9.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (3.9.0)
+Requirement already satisfied: libclang&gt;=13.0.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (18.1.1)
+Requirement already satisfied: ml-dtypes~=0.2.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (0.2.0)
+Requirement already satisfied: opt-einsum&gt;=2.3.2 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (3.3.0)
+Requirement already satisfied: packaging in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (24.0)
+Requirement already satisfied: protobuf!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,&lt;5.0.0dev,&gt;=3.20.3 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (3.20.3)
+Requirement already satisfied: setuptools in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (67.7.2)
+Requirement already satisfied: six&gt;=1.12.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (1.16.0)
+Requirement already satisfied: termcolor&gt;=1.1.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (2.4.0)
+Requirement already satisfied: typing-extensions&gt;=3.6.6 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (4.11.0)
+Requirement already satisfied: wrapt&lt;1.15,&gt;=1.11.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (1.14.1)
+Requirement already satisfied: tensorflow-io-gcs-filesystem&gt;=0.23.1 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (0.36.0)
+Requirement already satisfied: grpcio&lt;2.0,&gt;=1.24.3 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (1.62.2)
+Requirement already satisfied: tensorboard&lt;2.16,&gt;=2.15 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (2.15.2)
+Requirement already satisfied: tensorflow-estimator&lt;2.16,&gt;=2.15.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (2.15.0)
+Requirement already satisfied: keras&lt;2.16,&gt;=2.15.0 in /usr/local/lib/python3.10/dist-packages (from tensorflow&gt;=2.9.3-&gt;servir-aces) (2.15.0)
+Requirement already satisfied: google-cloud-storage in /usr/local/lib/python3.10/dist-packages (from earthengine-api-&gt;servir-aces) (2.8.0)
+Requirement already satisfied: google-api-python-client&gt;=1.12.1 in /usr/local/lib/python3.10/dist-packages (from earthengine-api-&gt;servir-aces) (2.84.0)
+Requirement already satisfied: google-auth&gt;=1.4.1 in /usr/local/lib/python3.10/dist-packages (from earthengine-api-&gt;servir-aces) (2.27.0)
+Requirement already satisfied: google-auth-httplib2&gt;=0.0.3 in /usr/local/lib/python3.10/dist-packages (from earthengine-api-&gt;servir-aces) (0.1.1)
+Requirement already satisfied: httplib2&lt;1dev,&gt;=0.9.2 in /usr/local/lib/python3.10/dist-packages (from earthengine-api-&gt;servir-aces) (0.22.0)
+Requirement already satisfied: requests in /usr/local/lib/python3.10/dist-packages (from earthengine-api-&gt;servir-aces) (2.31.0)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;servir-aces) (1.2.1)
+Requirement already satisfied: cycler&gt;=0.10 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;servir-aces) (0.12.1)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;servir-aces) (4.51.0)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;servir-aces) (1.4.5)
+Requirement already satisfied: pillow&gt;=6.2.0 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;servir-aces) (9.4.0)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;servir-aces) (3.1.2)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /usr/local/lib/python3.10/dist-packages (from matplotlib-&gt;servir-aces) (2.8.2)
+Requirement already satisfied: wheel&lt;1.0,&gt;=0.23.0 in /usr/local/lib/python3.10/dist-packages (from astunparse&gt;=1.6.0-&gt;tensorflow&gt;=2.9.3-&gt;servir-aces) (0.43.0)
+Requirement already satisfied: google-api-core!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0,&lt;3.0.0dev,&gt;=1.31.5 in /usr/local/lib/python3.10/dist-packages (from google-api-python-client&gt;=1.12.1-&gt;earthengine-api-&gt;servir-aces) (2.11.1)
+Requirement already satisfied: uritemplate&lt;5,&gt;=3.0.1 in /usr/local/lib/python3.10/dist-packages (from google-api-python-client&gt;=1.12.1-&gt;earthengine-api-&gt;servir-aces) (4.1.1)
+Requirement already satisfied: cachetools&lt;6.0,&gt;=2.0.0 in /usr/local/lib/python3.10/dist-packages (from google-auth&gt;=1.4.1-&gt;earthengine-api-&gt;servir-aces) (5.3.3)
+Requirement already satisfied: pyasn1-modules&gt;=0.2.1 in /usr/local/lib/python3.10/dist-packages (from google-auth&gt;=1.4.1-&gt;earthengine-api-&gt;servir-aces) (0.4.0)
+Requirement already satisfied: rsa&lt;5,&gt;=3.1.4 in /usr/local/lib/python3.10/dist-packages (from google-auth&gt;=1.4.1-&gt;earthengine-api-&gt;servir-aces) (4.9)
+Requirement already satisfied: google-auth-oauthlib&lt;2,&gt;=0.5 in /usr/local/lib/python3.10/dist-packages (from tensorboard&lt;2.16,&gt;=2.15-&gt;tensorflow&gt;=2.9.3-&gt;servir-aces) (1.2.0)
+Requirement already satisfied: markdown&gt;=2.6.8 in /usr/local/lib/python3.10/dist-packages (from tensorboard&lt;2.16,&gt;=2.15-&gt;tensorflow&gt;=2.9.3-&gt;servir-aces) (3.6)
+Requirement already satisfied: tensorboard-data-server&lt;0.8.0,&gt;=0.7.0 in /usr/local/lib/python3.10/dist-packages (from tensorboard&lt;2.16,&gt;=2.15-&gt;tensorflow&gt;=2.9.3-&gt;servir-aces) (0.7.2)
+Requirement already satisfied: werkzeug&gt;=1.0.1 in /usr/local/lib/python3.10/dist-packages (from tensorboard&lt;2.16,&gt;=2.15-&gt;tensorflow&gt;=2.9.3-&gt;servir-aces) (3.0.2)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;earthengine-api-&gt;servir-aces) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;earthengine-api-&gt;servir-aces) (3.7)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;earthengine-api-&gt;servir-aces) (2.0.7)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/local/lib/python3.10/dist-packages (from requests-&gt;earthengine-api-&gt;servir-aces) (2024.2.2)
+Requirement already satisfied: google-cloud-core&lt;3.0dev,&gt;=2.3.0 in /usr/local/lib/python3.10/dist-packages (from google-cloud-storage-&gt;earthengine-api-&gt;servir-aces) (2.3.3)
+Requirement already satisfied: google-resumable-media&gt;=2.3.2 in /usr/local/lib/python3.10/dist-packages (from google-cloud-storage-&gt;earthengine-api-&gt;servir-aces) (2.7.0)
+Requirement already satisfied: googleapis-common-protos&lt;2.0.dev0,&gt;=1.56.2 in /usr/local/lib/python3.10/dist-packages (from google-api-core!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0,&lt;3.0.0dev,&gt;=1.31.5-&gt;google-api-python-client&gt;=1.12.1-&gt;earthengine-api-&gt;servir-aces) (1.63.0)
+Requirement already satisfied: requests-oauthlib&gt;=0.7.0 in /usr/local/lib/python3.10/dist-packages (from google-auth-oauthlib&lt;2,&gt;=0.5-&gt;tensorboard&lt;2.16,&gt;=2.15-&gt;tensorflow&gt;=2.9.3-&gt;servir-aces) (1.3.1)
+Requirement already satisfied: google-crc32c&lt;2.0dev,&gt;=1.0 in /usr/local/lib/python3.10/dist-packages (from google-resumable-media&gt;=2.3.2-&gt;google-cloud-storage-&gt;earthengine-api-&gt;servir-aces) (1.5.0)
+Requirement already satisfied: pyasn1&lt;0.7.0,&gt;=0.4.6 in /usr/local/lib/python3.10/dist-packages (from pyasn1-modules&gt;=0.2.1-&gt;google-auth&gt;=1.4.1-&gt;earthengine-api-&gt;servir-aces) (0.6.0)
+Requirement already satisfied: MarkupSafe&gt;=2.1.1 in /usr/local/lib/python3.10/dist-packages (from werkzeug&gt;=1.0.1-&gt;tensorboard&lt;2.16,&gt;=2.15-&gt;tensorflow&gt;=2.9.3-&gt;servir-aces) (2.1.5)
+Requirement already satisfied: oauthlib&gt;=3.0.0 in /usr/local/lib/python3.10/dist-packages (from requests-oauthlib&gt;=0.7.0-&gt;google-auth-oauthlib&lt;2,&gt;=0.5-&gt;tensorboard&lt;2.16,&gt;=2.15-&gt;tensorflow&gt;=2.9.3-&gt;servir-aces) (3.2.2)
+Installing collected packages: python-dotenv, servir-aces
+Successfully installed python-dotenv-1.0.1 servir-aces-0.0.14</code></pre>
+</div>
+</div>
+<div id="cell-6" class="cell" data-outputid="d45ebbf3-e7fa-4dcb-d3b0-a7b8455e61b1" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>SERVIR<span class="op">/</span>servir<span class="op">-</span>aces</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cloning into 'servir-aces'...
+remote: Enumerating objects: 731, done.
+remote: Counting objects: 100% (90/90), done.
+remote: Compressing objects: 100% (50/50), done.
+remote: Total 731 (delta 55), reused 40 (delta 40), pack-reused 641
+Receiving objects: 100% (731/731), 3.35 MiB | 4.84 MiB/s, done.
+Resolving deltas: 100% (478/478), done.</code></pre>
+</div>
+</div>
+<p>Now the repo is downloaded. We will create an environment file file to place point to our training data and customize parameters for the model. To do this, we make a copy of the <code>.env.example</code> file provided.</p>
+<p>Under the hood, all the configuration provided via the environment file are parsed as a config object and can be accessed programatically.</p>
+<p>Note current version does not expose all the model intracacies through the environment file but future version may include those depending on the need.</p>
+<div id="cell-8" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>cp servir<span class="op">-</span>aces<span class="op">/</span>.env.example servir<span class="op">-</span>aces<span class="op">/</span>config.env</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="setup-config-file-variables" class="level2">
+<h2 class="anchored" data-anchor-id="setup-config-file-variables">Setup config file variables</h2>
+<p>Okay, now we have the <code>config.env</code> file, we will use this to provide our environments and parameters.</p>
+<p>Note there are several parameters that can be changed. Let’s start by changing the BASEDIR as below.</p>
+<pre><code>BASEDIR = "/content/"</code></pre>
+<p>We will download data for this chapter. We will use <code>datasets</code> dir to download the data. Let’s go ahead and create that.</p>
+<div id="cell-12" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>mkdir <span class="op">/</span>content<span class="op">/</span>datasets</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s go ahead and download the datasets for which we need to calculate the number of samples. They can be found at the google cloud storage and we will use <code>gsutil</code> to get the dataset in our workspace. Each folder/ dataset has <code>training</code>, <code>testing</code>, and <code>validation</code> subdirectory. Let’s start by downloading these datasets in our workspace.</p>
+<div id="cell-14" class="cell" data-outputid="9de40f45-b2a1-4bb5-89fa-519652979b1e" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>gsutil <span class="op">-</span>m cp <span class="op">-</span>r gs:<span class="op">//</span>dl<span class="op">-</span>book<span class="op">/</span>chapter<span class="op">-</span><span class="dv">1</span><span class="op">/*</span> <span class="op">/</span>content<span class="op">/</span>datasets</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Copying gs://dl-book/chapter-1/dnn_planet_wo_indices/training/training.tfrecord.gz...
+/ [0 files][    0.0 B/352.3 KiB]                                                Copying gs://dl-book/chapter-1/dnn_planet_wo_indices/testing/testing.tfrecord.gz...
+/ [0 files][    0.0 B/404.4 KiB]                                                Copying gs://dl-book/chapter-1/.DS_Store...
+/ [0 files][    0.0 B/410.4 KiB]                                                Copying gs://dl-book/chapter-1/dnn_planet_wo_indices/validation/validation.tfrecord.gz...
+/ [0 files][    0.0 B/512.0 KiB]                                                Copying gs://dl-book/chapter-1/images/image_202100001.tfrecord.gz...
+/ [0 files][    0.0 B/ 46.3 MiB]                                                Copying gs://dl-book/chapter-1/images/image_202100002.tfrecord.gz...
+/ [0 files][    0.0 B/ 93.3 MiB]                                                Copying gs://dl-book/chapter-1/images/image_202100003.tfrecord.gz...
+/ [0 files][    0.0 B/139.2 MiB]                                                Copying gs://dl-book/chapter-1/images/image_202100004.tfrecord.gz...
+/ [0 files][    0.0 B/181.7 MiB]                                                Copying gs://dl-book/chapter-1/images/image_202100000.tfrecord.gz...
+Copying gs://dl-book/chapter-1/images/image_202100005.tfrecord.gz...
+Copying gs://dl-book/chapter-1/images/image_2021mixer.json...
+Copying gs://dl-book/chapter-1/prediction/prediction_dnn_v1.TFRecord...
+==&gt; NOTE: You are downloading one or more large file(s), which would
+run significantly faster if you enabled sliced object downloads. This
+feature is enabled by default but requires that compiled crcmod be
+installed (see "gsutil help crcmod").
+
+Copying gs://dl-book/chapter-1/prediction/prediction_unet_v1.TFRecord...
+Copying gs://dl-book/chapter-1/training_data/testing_10/testing__256x256-00000-of-00008.tfrecord.gz...
+Copying gs://dl-book/chapter-1/training_data/testing_10/testing__256x256-00001-of-00008.tfrecord.gz...
+Copying gs://dl-book/chapter-1/training_data/testing_10/testing__256x256-00002-of-00008.tfrecord.gz...
+Copying gs://dl-book/chapter-1/training_data/testing_10/testing__256x256-00003-of-00008.tfrecord.gz...
+Copying gs://dl-book/chapter-1/training_data/testing_10/testing__256x256-00004-of-00008.tfrecord.gz...
+Copying gs://dl-book/chapter-1/training_data/testing_10/testing__256x256-00005-of-00008.tfrecord.gz...
+Copying gs://dl-book/chapter-1/training_data/testing_10/testing__256x256-00006-of-00008.tfrecord.gz...
+Copying gs://dl-book/chapter-1/training_data/testing_10/testing__256x256-00007-of-00008.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00000-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00001-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00002-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00003-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00004-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00005-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00006-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00007-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00008-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00009-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00010-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00011-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00012-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00013-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00014-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00015-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00016-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00017-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00018-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00019-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00020-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00021-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00022-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00023-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00024-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00025-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00026-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00027-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00028-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00029-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00030-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00031-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00032-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00033-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00035-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00034-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00036-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/testing/testing-00037-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00000-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00001-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00002-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00003-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00004-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00005-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00006-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00007-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00008-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00009-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00010-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00011-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00012-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00013-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00014-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00015-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00016-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00017-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00018-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00019-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00020-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00021-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00022-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00023-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00024-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00025-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00026-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00027-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00028-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00029-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00030-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00031-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00032-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00033-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00034-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00035-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00036-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/training/training-00037-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00000-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00001-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00002-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00003-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00004-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00005-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00006-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00007-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00008-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00009-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00010-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00011-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00012-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00013-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00014-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00015-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00016-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00017-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00018-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00019-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00020-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00021-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00022-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00023-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00024-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00025-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00026-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00027-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00028-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00029-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00030-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00031-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00032-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00033-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00034-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00035-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00036-of-00038.tfrecord.gz...
+Copying gs://dl-book/chapter-1/unet_256x256_planet_wo_indices/validation/validation-00037-of-00038.tfrecord.gz...</code></pre>
+</div>
+</div>
+<p>We will use the <code>unet_256x256_planet_wo_indices</code> dataset inside the <code>dataset</code> folder for this exercise. Let’s go ahead and change our DATADIR in the <code>config.env</code> file as below.</p>
+<pre><code>DATADIR = "datasets/unet_256x256_planet_wo_indices"</code></pre>
+<p>These datasets have RGBN from Planetscope mosiac. Since we are trying to map the rice fields, we use growing season and pre-growing season information. Thus, we have 8 optical bands, namely <code>red_before</code>, <code>green_before</code>, <code>blue_before</code>, <code>nir_before</code>, <code>red_during</code>, <code>green_during</code>, <code>blue_during</code>, and <code>nir_during</code>. In adidition, you can use <code>USE_ELEVATION</code> and <code>USE_S1</code> config to include the topographic and radar information. Since currently we are not including these, so we won’t be settting these config values. Similarly, these datasets are tiled to 256x256 pixels, so let’s also change that.</p>
+<pre><code># For model training, USE_ELEVATION extends FEATURES with "elevation" &amp; "slope"
+# USE_S1 extends FEATURES with "vv_asc_before", "vh_asc_before", "vv_asc_during", "vh_asc_during",
+# "vv_desc_before", "vh_desc_before", "vv_desc_during", "vh_desc_during"
+# In case these are not useful and you have other bands in your training data, you can do set
+# USE_ELEVATION and USE_S1 to False and update FEATURES to include needed bands
+USE_ELEVATION = False
+USE_S1 = False
+
+PATCH_SHAPE = (256, 256)</code></pre>
+<p>Next, we need to calculate the size of the traiing, testing and validation dataset. For this, we know our size before hand. But let’s use <code>aces</code> useful functionality to calculate this.</p>
+<pre><code># Sizes of the training and evaluation datasets.
+TRAIN_SIZE = 8531
+TEST_SIZE = 1222
+VAL_SIZE = 2404</code></pre>
+</section>
+<section id="update-the-config-file-programtically" class="level2">
+<h2 class="anchored" data-anchor-id="update-the-config-file-programtically">Update the config file programtically</h2>
+<p>Let’s make a dictionary so we can change these config settings programatically.</p>
+<div id="cell-20" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>BASEDIR <span class="op">=</span> <span class="st">"/content/"</span> <span class="co"># @param {type:"string"}</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>DATADIR <span class="op">=</span> <span class="st">"datasets/unet_256x256_planet_wo_indices"</span> <span class="co"># @param {type:"string"}</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>USE_ELEVATION <span class="op">=</span> <span class="st">"False"</span> <span class="co"># @param {type:"string"}</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>USE_S1 <span class="op">=</span> <span class="st">"False"</span> <span class="co"># @param {type:"string"}</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>PATCH_SHAPE <span class="op">=</span> <span class="st">"(256, 256)"</span> <span class="co"># @param {type:"string"}</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>BATCH_SIZE <span class="op">=</span> <span class="st">"32"</span> <span class="co"># @param {type:"string"}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-21" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>config_settings <span class="op">=</span> {</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"BASEDIR"</span> : BASEDIR,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"DATADIR"</span>: DATADIR,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"USE_ELEVATION"</span>: USE_ELEVATION,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"USE_S1"</span>: USE_S1,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"PATCH_SHAPE"</span>: PATCH_SHAPE,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"BATCH_SIZE"</span>: BATCH_SIZE,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-22" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dotenv</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>config_file <span class="op">=</span> <span class="st">"servir-aces/config.env"</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> config_key <span class="kw">in</span> config_settings:</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    dotenv.set_key(dotenv_path<span class="op">=</span>config_file,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>                   key_to_set<span class="op">=</span>config_key,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>                   value_to_set<span class="op">=</span>config_settings[config_key]</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>                   )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="load-config-file-variables" class="level2">
+<h2 class="anchored" data-anchor-id="load-config-file-variables">Load config file variables</h2>
+<div id="cell-24" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> aces <span class="im">import</span> Config, DataProcessor</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-25" class="cell" data-outputid="d656766c-0b2c-4b1c-9f0c-2c5223295309" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>config_file <span class="op">=</span> <span class="st">"/content/servir-aces/config.env"</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>config <span class="op">=</span> Config(config_file, override<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>BASEDIR: /content
+DATADIR: /content/datasets/unet_256x256_planet_wo_indices
+using features: ['red_before', 'green_before', 'blue_before', 'nir_before', 'red_during', 'green_during', 'blue_during', 'nir_during']
+using labels: ['class']</code></pre>
+</div>
+</div>
+<p>Most of the config in the <code>config.env</code> is now available via the config instance. Let’s check few of them here.</p>
+<div id="cell-27" class="cell" data-outputid="150fc46f-b902-4ba0-cc6d-7dfb2c535b41" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>config.TRAINING_DIR, config.BATCH_SIZE, config.FEATURES</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>(PosixPath('/content/datasets/unet_256x256_planet_wo_indices/training'),
+ 32,
+ ['red_before',
+  'green_before',
+  'blue_before',
+  'nir_before',
+  'red_during',
+  'green_during',
+  'blue_during',
+  'nir_during'])</code></pre>
+</div>
+</div>
+</section>
+<section id="calculate-the-number-of-records" class="level2">
+<h2 class="anchored" data-anchor-id="calculate-the-number-of-records">Calculate the number of records</h2>
+<p>Use the <code>calculate_n_samples</code> static function of the <code>DataProcessor</code> class to get the number of records for each split. You can provide additional parameters (<code>PRINT_DATASET</code>) as well.</p>
+<div id="cell-30" class="cell" data-outputid="9518129d-a15f-475e-b13c-b7b5be2a62b4" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>additional_config <span class="op">=</span> {</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"PRINT_DATASET"</span>: <span class="va">True</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>n_training_records, n_testing_records, n_validation_records <span class="op">=</span> DataProcessor.calculate_n_samples(<span class="op">**</span>{<span class="op">**</span>config.__dict__, <span class="op">**</span>additional_config})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Training
+inputs: float32 (256, 256, 8)
+tf.Tensor(
+[[[0.04035  0.0461   0.0259   ... 0.03885  0.0167   0.167425]
+  [0.03675  0.044525 0.02385  ... 0.0367   0.015075 0.15035 ]
+  [0.0288   0.039725 0.022375 ... 0.03295  0.01355  0.144725]
+  ...
+  [0.029625 0.044825 0.02755  ... 0.0371   0.017125 0.172825]
+  [0.027825 0.0424   0.0271   ... 0.036675 0.016825 0.169375]
+  [0.029975 0.046125 0.0272   ... 0.037925 0.01715  0.174475]]
+
+ [[0.0328   0.0432   0.0236   ... 0.03615  0.014875 0.159375]
+  [0.0273   0.039525 0.0219   ... 0.031475 0.013425 0.139925]
+  [0.0321   0.04045  0.02235  ... 0.0346   0.014325 0.152   ]
+  ...
+  [0.029825 0.0453   0.02725  ... 0.03725  0.01675  0.1777  ]
+  [0.0305   0.04465  0.0276   ... 0.03825  0.017225 0.17445 ]
+  [0.03075  0.047175 0.027475 ... 0.039175 0.017775 0.17845 ]]
+
+ [[0.029575 0.04125  0.02265  ... 0.03425  0.014675 0.1507  ]
+  [0.024    0.038475 0.02175  ... 0.029925 0.012125 0.1312  ]
+  [0.031825 0.0415   0.0228   ... 0.03515  0.01495  0.1445  ]
+  ...
+  [0.030975 0.04515  0.027625 ... 0.038175 0.0172   0.17785 ]
+  [0.03175  0.046125 0.0285   ... 0.04035  0.017775 0.18125 ]
+  [0.0317   0.048    0.0282   ... 0.0398   0.0171   0.1855  ]]
+
+ ...
+
+ [[0.09805  0.09635  0.074375 ... 0.055425 0.02635  0.23565 ]
+  [0.0949   0.088425 0.072575 ... 0.05455  0.02595  0.250725]
+  [0.0947   0.091025 0.071425 ... 0.05145  0.024825 0.2485  ]
+  ...
+  [0.07875  0.069325 0.04305  ... 0.071225 0.045425 0.302775]
+  [0.072325 0.068075 0.043    ... 0.065475 0.042125 0.30345 ]
+  [0.06735  0.062125 0.03735  ... 0.06095  0.03875  0.309275]]
+
+ [[0.092375 0.093225 0.0726   ... 0.05565  0.0267   0.240025]
+  [0.094625 0.089775 0.0718   ... 0.054675 0.025675 0.251225]
+  [0.094325 0.0928   0.07335  ... 0.05325  0.0247   0.27065 ]
+  ...
+  [0.111025 0.088825 0.062725 ... 0.09535  0.064175 0.29085 ]
+  [0.099925 0.0841   0.05815  ... 0.09325  0.06745  0.286575]
+  [0.091975 0.08135  0.056225 ... 0.089575 0.06185  0.28065 ]]
+
+ [[0.092575 0.090825 0.069    ... 0.055525 0.02595  0.245075]
+  [0.092725 0.090775 0.067725 ... 0.053675 0.025225 0.2487  ]
+  [0.095    0.094375 0.07145  ... 0.0536   0.024225 0.2796  ]
+  ...
+  [0.117025 0.09645  0.0705   ... 0.118475 0.08195  0.272875]
+  [0.10465  0.08295  0.060175 ... 0.0951   0.07255  0.2546  ]
+  [0.097475 0.0948   0.0681   ... 0.105525 0.082425 0.247325]]], shape=(256, 256, 8), dtype=float32)
+outputs: float32 (256, 256, 5)
+tf.Tensor(
+[[[1. 0. 0. 0. 0.]
+  [1. 0. 0. 0. 0.]
+  [1. 0. 0. 0. 0.]
+  ...
+  [0. 0. 1. 0. 0.]
+  [0. 0. 1. 0. 0.]
+  [0. 0. 1. 0. 0.]]
+
+ [[1. 0. 0. 0. 0.]
+  [1. 0. 0. 0. 0.]
+  [1. 0. 0. 0. 0.]
+  ...
+  [0. 0. 1. 0. 0.]
+  [0. 0. 1. 0. 0.]
+  [0. 0. 1. 0. 0.]]
+
+ [[1. 0. 0. 0. 0.]
+  [1. 0. 0. 0. 0.]
+  [1. 0. 0. 0. 0.]
+  ...
+  [0. 0. 1. 0. 0.]
+  [0. 0. 1. 0. 0.]
+  [0. 0. 1. 0. 0.]]
+
+ ...
+
+ [[0. 1. 0. 0. 0.]
+  [0. 1. 0. 0. 0.]
+  [0. 1. 0. 0. 0.]
+  ...
+  [1. 0. 0. 0. 0.]
+  [1. 0. 0. 0. 0.]
+  [1. 0. 0. 0. 0.]]
+
+ [[0. 1. 0. 0. 0.]
+  [0. 1. 0. 0. 0.]
+  [0. 1. 0. 0. 0.]
+  ...
+  [0. 0. 0. 1. 0.]
+  [0. 0. 0. 1. 0.]
+  [0. 0. 1. 0. 0.]]
+
+ [[0. 1. 0. 0. 0.]
+  [0. 1. 0. 0. 0.]
+  [0. 1. 0. 0. 0.]
+  ...
+  [0. 0. 0. 1. 0.]
+  [0. 0. 0. 1. 0.]
+  [0. 0. 0. 1. 0.]]], shape=(256, 256, 5), dtype=float32)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>WARNING:tensorflow:From /usr/local/lib/python3.10/dist-packages/aces/data_processor.py:55: ignore_errors (from tensorflow.python.data.experimental.ops.error_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.data.Dataset.ignore_errors` instead.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>CPU times: user 3min 47s, sys: 11.2 s, total: 3min 58s
+Wall time: 3min 45s</code></pre>
+</div>
+</div>
+<div id="cell-31" class="cell" data-outputid="6b58c435-b312-4b02-e2b8-79695957b4a6" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"no of training records: </span><span class="sc">{</span>n_training_records<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"no of testing records: </span><span class="sc">{</span>n_testing_records<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"no of validation records: </span><span class="sc">{</span>n_validation_records<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>no of training records: 8531
+no of testing records: 1222
+no of validation records: 2404</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/SERVIR\.github\.io\/SERVIR-Applied-Deep-Learning-Book\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
