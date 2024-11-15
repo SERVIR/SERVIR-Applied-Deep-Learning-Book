@@ -6,11 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Tim Mayer">
-<meta name="author" content="Biplov Bhandari">
-<meta name="dcterms.date" content="2024-11-14">
+<meta name="author" content="Norah Smith">
+<meta name="dcterms.date" content="2024-11-15">
 
-<title>SERVIR-Applied-Deep-Learning-Book</title>
+<title>SERVIR’s Applied Deep Learning Handbook</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,7 +22,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -33,7 +52,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./02_Data_Preparation" rel="next">
+<link href="./02-Data-Preparation/index.html" rel="next">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -76,7 +95,7 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar floating fullcontent">
+<body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -85,7 +104,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">SERVIR-Applied-Deep-Learning-Book</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Introduction</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -102,7 +121,7 @@ ul.task-list li input[type="checkbox"] {
     <div class="sidebar-title mb-0 py-0">
       <a href="./">SERVIR’s Applied Deep Learning Handbook</a> 
         <div class="sidebar-tools-main tools-wide">
-    <a href="https://servir.github.io/SERVIR-Applied-Deep-Learning-Book/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-git"></i></a>
+    <a href="https://mayert1.github.io/quarto_book_trial/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-git"></i></a>
     <a href="./SERVIR-s-Applied-Deep-Learning-Handbook.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
@@ -118,7 +137,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">SERVIR-Applied-Deep-Learning-Book</span></span></a>
+ <span class="menu-text">Introduction</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -132,8 +151,68 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./02-Data-Preparation/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Data Preparation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./03_Semantic_Segmentation/01__Crop_Mapping/notebooks/Rice_Mapping_Bhutan_2021.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Rice mapping in Bhutan with U-Net using high resolution satellite imagery</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Semantic Segmentation (Crop Mapping)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_Object_Detection/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Object Detection</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_Time_Series/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Time Series</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_Eco_Process_Sim/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Ecological Processes Simulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_Transfer_Learning/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Transfer Learning</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08_Fusion/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Fusion</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_Downscaling/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Downscaling</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10_Future/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Future of Deep Learning and Foundational Models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11_Ethics/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Ethics and Artificial Intelligence</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12_Conclusions/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Conclusions</span></span></a>
   </div>
 </li>
       </ul>
@@ -149,13 +228,21 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://mayert1.github.io/quarto_book_trial/blob/main/index.md" class="toc-action"><i class="bi bi-git"></i>View source</a></li><li><a href="https://mayert1.github.io/quarto_book_trial/edit/main/index.md" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://mayert1.github.io/quarto_book_trial/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">SERVIR-Applied-Deep-Learning-Book</h1>
+<h1 class="title">SERVIR’s Applied Deep Learning Handbook</h1>
 </div>
 
 
@@ -190,7 +277,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 14, 2024</p>
+      <p class="date">November 15, 2024</p>
     </div>
   </div>
   
@@ -202,11 +289,24 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><img src="images/Book_Cover.png" title="SERVIR's Applied Deep Learning Handbook" class="quarto-cover-image img-fluid"></p>
-<p>This is a Quarto website.</p>
-<p>To learn more about Quarto websites visit <a href="https://servir.github.io/SERVIR-Applied-Deep-Learning-Book/" class="uri">https://servir.github.io/SERVIR-Applied-Deep-Learning-Book/</a>.</p>
+
+<section id="introduction" class="level1 unnumbered">
+<h1 class="unnumbered">Introduction</h1><p><img src="images/Book_Cover.png" title="SERVIR's Applied Deep Learning Handbook" class="quarto-cover-image img-fluid"></p>
+<p>The <a href="https://servirglobal.net/">SERVIR</a> program which is a partnership of NASA, USAID, and leading technical organizations striving to strengthens the capacity of countries in Asia, Africa, and the Americas to use satellite data and geospatial technology to address critical challenges in weather &amp; climate resilience, agriculture and food security, ecosystem and carbon management, water security, disasters, as well as air quality and health. SERVIR co-develops innovative solutions through a network of regional hubs to improve resilience and sustainable resource management at local, national, and regional scales. Additionally, SERVIR focuses on developing participate in innovative knowledge products such as the SAR Handbook <span class="citation" data-cites="flores2019sar">Flores-Anderson et al. (<a href="references.html#ref-flores2019sar" role="doc-biblioref">2019</a>)</span> and the GEE book <span class="citation" data-cites="cardille2023cloud">Cardille et al. (<a href="references.html#ref-cardille2023cloud" role="doc-biblioref">2023</a>)</span> designed to support capacity building in applying Remote Sensing and geospatial approaches to address challenges.</p>
+<p>The focus of the SERVIR Applied Deep Learning Book is to provide practitioners with a wide variety of applied examples of Remote Sensing Deep Learning approaches. With each chapter focusing on a specific problem set such as object detection of downscaling using Deep Learning. Additionally, throughout the books chapters various examples are provided spanning the aforementioned SERVIR thematic areas. Thereby providing a wide variety of thematic applications to complement reader’s domain specific practical knowledge such as agronomy or forestry etc.</p>
+<p>We suspect readers are coming to this virtual book with preexisting geospatial expertise. However, limited Deep Learning knowledge and application specifically around environmental and Remote Sensing oriented challenges. We welcome readers to review the initial chapter on data preparation before progressing towards chapters with focused on specific problem sets or thematic use cases.</p>
+<p>Each chapter contains both the theoretical background as well as a practical hand-on section facilitated through virtual notebooks. Finally, this book spans a variety of platforms such as TensorFlow and PyTorch to provide readers with a wide set of examples.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-cardille2023cloud" class="csl-entry" role="listitem">
+Cardille, Jeffrey A, Morgan A Crowley, David Saah, and Nicholas E Clinton. 2023. <em>Cloud-Based Remote Sensing with Google Earth Engine: Fundamentals and Applications</em>. Springer Nature.
+</div>
+<div id="ref-flores2019sar" class="csl-entry" role="listitem">
+Flores-Anderson, Africa Ixmuca, Kelsey E Herndon, Rajesh Bahadur Thapa, and Emil Cherrington. 2019. <span>“The SAR Handbook: Comprehensive Methodologies for Forest Monitoring and Biomass Estimation.”</span>
+</div>
+</div>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -777,8 +877,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./02_Data_Preparation" class="pagination-link" aria-label="">
-        <span class="nav-page-text"></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./02-Data-Preparation/index.html" class="pagination-link" aria-label="Data Preparation">
+        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Data Preparation</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -787,4 +887,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://servir.github.io/SERVIR-Applied-Deep-Learning-Book/blob/main/index.qmd" class="toc-action"><i class="bi bi-git"></i>View source</a></li><li><a href="https://servir.github.io/SERVIR-Applied-Deep-Learning-Book/edit/main/index.qmd" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://servir.github.io/SERVIR-Applied-Deep-Learning-Book/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://mayert1.github.io/quarto_book_trial/blob/main/index.md" class="toc-action"><i class="bi bi-git"></i>View source</a></li><li><a href="https://mayert1.github.io/quarto_book_trial/edit/main/index.md" class="toc-action"><i class="bi empty"></i>Edit this page</a></li><li><a href="https://mayert1.github.io/quarto_book_trial/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
