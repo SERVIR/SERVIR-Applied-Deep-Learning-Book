@@ -18,53 +18,70 @@
 #     toc: true
 
 
-
-
 project:
-  type: book
-
-book:
-  title: "SERVIR's Applied Deep Learning Handbook"
-  author:
-    - name: Tim Mayer
-      affiliations:
-        - id: nasa-servir
-          name: NASA - SERVIR
-        - id: UofA-huntsville
-          name: The University of Alabama in Huntsville
-    - name: Biplov Bhandari
-      affiliations:
-        - id: woolpert
-          name: Woolpert Digital Innovations
-
-  date: "11/14/2024"
-  cover-image: images/Book_Cover.png
-  repo-url: https://servir.github.io/SERVIR-Applied-Deep-Learning-Book/
-  repo-actions: [source, edit, issue]
-  downloads: [pdf]
-  chapters:
-    - index.qmd
-    - part: "Curriculum"
-      chapters: 
-        - 02_Data_Preparation
-        - 03_Semantic_Segmentation/01__Crop_Mapping/notebooks/Rice_Mapping_Bhutan_2021.ipynb
-        - 04_Object_Detection
-        - 05_Time_Series
-        - 06_Ecological_Processes_Simulation
-        - 07_Transfer_Learning
-        - 08_Fusion
-        - 09_Downscaling
-        - 10_Future_of_Deep_Learning_and_Foundational_Models
-        - 11_Ethics_and_Artificial_Intelligence
-        - 12_Conclusions
-    - references.qmd
-bibliography: references.bib
-
+  type: website
+website:
+  title: "SERVIR Applied Deep Learning Book"
+  navbar:
+    left:
+      - text: Home
+        href: index.qmd
+      - text: Chapters
+        href: chapters/index.qmd
+      - text: Resources
+        href: resources.qmd
 format:
   html:
-    theme:  # pandoc, default, flatly, darkly, sketchy, sandstone, cyborg, zephyr
-      light: flatly
-      dark: darkly
-  pdf:
-    documentclass: scrreprt  # book
+    theme: cosmo
+
+
+
+
+# project:
+#   type: book
+
+# book:
+#   title: "SERVIR's Applied Deep Learning Handbook"
+#   author:
+#     - name: Tim Mayer
+#       affiliations:
+#         - id: nasa-servir
+#           name: NASA - SERVIR
+#         - id: UofA-huntsville
+#           name: The University of Alabama in Huntsville
+#     - name: Biplov Bhandari
+#       affiliations:
+#         - id: woolpert
+#           name: Woolpert Digital Innovations
+
+#   date: "11/14/2024"
+#   cover-image: images/Book_Cover.png
+#   repo-url: https://servir.github.io/SERVIR-Applied-Deep-Learning-Book/
+#   repo-actions: [source, edit, issue]
+#   downloads: [pdf]
+#   chapters:
+#     - index.qmd
+#     - part: "Curriculum"
+#       chapters: 
+#         - 02_Data_Preparation
+#         - 03_Semantic_Segmentation/01__Crop_Mapping/notebooks/Rice_Mapping_Bhutan_2021.ipynb
+#         - 04_Object_Detection
+#         - 05_Time_Series
+#         - 06_Ecological_Processes_Simulation
+#         - 07_Transfer_Learning
+#         - 08_Fusion
+#         - 09_Downscaling
+#         - 10_Future_of_Deep_Learning_and_Foundational_Models
+#         - 11_Ethics_and_Artificial_Intelligence
+#         - 12_Conclusions
+#     - references.qmd
+# bibliography: references.bib
+
+# format:
+#   html:
+#     theme:  # pandoc, default, flatly, darkly, sketchy, sandstone, cyborg, zephyr
+#       light: flatly
+#       dark: darkly
+#   pdf:
+#     documentclass: scrreprt  # book
     
