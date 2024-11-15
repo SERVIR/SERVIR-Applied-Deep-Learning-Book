@@ -1,0 +1,16 @@
+[project]
+name = "servir_geoai_handbook_ch03"
+version = "0.1.0"
+[tool.pixi.project]
+channels = ["conda-forge"]
+platforms = ["osx-arm64"]
+
+[tool.pixi.pypi-dependencies]
+servir_geoai_handbook_ch03 = { path = ".", editable = true }
+
+[tool.pixi.tasks]
+
+[tool.pixi.dependencies]
+python = "==3.11"
+jupyter = ">=1.1.1,<2"
+servir-aces = ">=0.0.19,<0.0.20"
