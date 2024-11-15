@@ -24,6 +24,7 @@ book:
     #     - id: UofA-huntsville
     #       name: The University of Alabama in Huntsville
 
+  
   date: "11/15/2024"
   cover-image: images/Book_Cover.png
   repo-url: https://servir.github.io/SERVIR-Applied-Deep-Learning-Book/
