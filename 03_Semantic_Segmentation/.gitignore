@@ -1,5 +1,0 @@
-# pixi environments
-.pixi
-*.egg-info
-
-01__Crop_Mapping/notebooks/content/*
