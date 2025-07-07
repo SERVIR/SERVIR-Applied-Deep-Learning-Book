@@ -26,7 +26,7 @@ book:
 
   date: "11/15/2024"
   cover-image: images/Book_Cover.png
-  repo-url: https://mayert1.github.io/quarto_book_trial/
+  repo-url: https://servir.github.io/SERVIR-Applied-Deep-Learning-Book/ #https://mayert1.github.io/quarto_book_trial/
   repo-actions: [source, edit, issue]
   downloads: [pdf]
   chapters:
