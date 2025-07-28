@@ -14,25 +14,17 @@ book:
       affiliations:
         - id: woolpert
           name: Woolpert Digital Innovations
-    # - name: Lilly Thomas
-    #   affiliations:
-    #     - name: Development Seed
-    # - name: Tim Mayer
-    #   affiliations:
-    #     - id: nasa-servir
-    #       name: NASA - SERVIR
-    #     - id: UofA-huntsville
-    #       name: The University of Alabama in Huntsville
 
   date: "11/15/2024"
   cover-image: images/Book_Cover.png
-  repo-url: https://servir.github.io/SERVIR-Applied-Deep-Learning-Book/ #https://mayert1.github.io/quarto_book_trial/
+  # repo-url: https://servir.github.io/SERVIR-Applied-Deep-Learning-Book/ #https://mayert1.github.io/quarto_book_trial/
+  repo-url: https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book
   repo-actions: [source, edit, issue]
   downloads: [pdf]
   chapters:
     - index.md
     - part: "Curriculum"
-      chapters: 
+      chapters:
         - 02-Data-Preparation/index.ipynb
         - 03_Semantic_Segmentation/01__Crop_Mapping/notebooks/Rice_Mapping_Bhutan_2021.ipynb
         - 04_Object_Detection/index.ipynb
@@ -52,5 +44,14 @@ format:
     theme:  # pandoc, default, flatly, darkly, sketchy, sandstone, cyborg, zephyr
       light: flatly
       dark: darkly
+    # code-fold: true
+    # code-summary: "Show code"
+    # output-fold: true
+    # output-summary: "Show output"
+    page-tools: ["colab", "github", "source", "edit", "issue"]
   pdf:
     documentclass: scrreprt  # book
+    page-tools: [] # Remove page tools for PDF
+    code-fold: false  # Don't fold code in PDF
+    output-fold: false  # Don't fold output in PDF
+  # page-tools: ["colab", "github"]
