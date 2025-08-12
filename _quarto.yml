@@ -16,7 +16,7 @@ book:
           name: Woolpert Digital Innovations
 
   date: "11/15/2024"
-  cover-image: images/Book_Cover.png
+  cover-image: Images/Book_Cover_delta_6_25.png #images/Book_Cover.png
   # repo-url: https://servir.github.io/SERVIR-Applied-Deep-Learning-Book/ #https://mayert1.github.io/quarto_book_trial/
   repo-url: https://github.com/SERVIR/SERVIR-Applied-Deep-Learning-Book
   repo-actions: [source, edit, issue]
