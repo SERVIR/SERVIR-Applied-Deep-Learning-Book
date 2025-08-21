@@ -1,0 +1,1 @@
+1. [Guide for migrating chapter: GitHub, Quarto, and Website](https://docs.google.com/document/u/1/d/e/2PACX-1vQsgJ_3ppltqn3gksEjWvotoY-7oCX6_DZRVIHiB6lFZhzWJZ2L2aauw919XchlkmuZRZq-YeCGN2J5/pub)
